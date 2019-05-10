@@ -19,4 +19,5 @@ public class Menu extends BaseEntity {
     @TableField("parent_code")
     @Column(name = "parent_code")
     private String parentCode;
+    private String url;
 }
