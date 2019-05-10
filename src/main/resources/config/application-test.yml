@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    url: jdbc:mysql://192.168.50.15:3306/education_test?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false
+    username: root
+    password: jxak1231
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  thymeleaf:
+    prefix: classpath:/templates
+    suffix: .html
+    mode: LEGACYHTML5
+    cache: false
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+  jpa:
+    database: MYSQL
+    properties:
+      hibernate,dialect: org.hibernate.dialect.MySQL5Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+mybatis-plus:
+  type-aliases-package: com.jxak.education.entity
+  mapper-locations: classpath:mapper/*.xml
+upload:
+  path: C:/upload/
+posyspath: C:/lic/
+popassword: 111111

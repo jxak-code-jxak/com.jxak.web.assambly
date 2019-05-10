@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>培训需求</title>
+    <link rel="stylesheet" th:href="@{/plugins/layui/css/layui.css}">
+    <script th:src="@{/plugins/layui/layui.js}"></script>
+    <script th:src="@{/module/common.js}"></script>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-col-xs2">
+            <div style="display: inline-block; width: 180px; padding: 10px; border: 1px solid #ddd; overflow: auto;">
+                <ul id="deptTree"></ul>
+            </div>
+        </div>
+        <div class="layui-col-xs10">
+            <div class="layui-btn-group demoTable">
+                <button id="addUser" class="layui-btn">新增<span class="layui-badge-dot layui-bg-orange"></span></button>
+                <button id="fileUploads" class="layui-btn">导入<span class="layui-badge-dot layui-bg-orange"></span>
+                </button>
+                <button id="downloadFile" type="button" class="layui-btn">导出<span
+                        class="layui-badge-dot layui-bg-orange"></span></button>
+            </div>
+            <table id="demo" lay-filter="demos" class="layui-hide"></table>
+            <script type="text/html" id="editBar">
+                <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>
+                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            </script>
+        </div>
+    </div>
+</div>
+<script th:inline="none">
+    layui.use(['tree', 'layer', 'table', 'rate','treeSelect'], function () {
+        var layer = layui.layer,
+            table = layui.table,
+            rate = layui.rate,
+            treeSelect = layui.treeSelect,
+            $ = layui.jquery;
+        var xuqiu = {
+            initTable: function (deptCode) {
+                //第一个实例
+                table.render({
+                    elem: '#demo'  //绑定table id
+                    , url: '/getTrainByDept/' + deptCode  //数据请求路径
+                    , cellMinWidth: 80
+                    , cols: [[
+                        {checkbox: true, fixed: true},
+                        {field: 'name', title: '姓名', sort: true},
+                        {field: 'sex', title: '性别', sort: true},
+                        {field: 'workTime', title: '入职时间', sort: true},
+                        {field: 'healthy', title: '健康状况', sort: true},
+                        {field: 'performance', title: '工作表现', sort: true},
+                        {field: 'skilled', title: '工作熟练度', sort: true},
+                        {field: 'train', title: '安全培训', sort: true},
+                        {field: 'writeTime', title: '填表时间', sort: true},
+                        {title: '操作', width: 178, toolbar: '#editBar', fixed: "right", align: "center"}
+                    ]]
+                    , page: true   //开启分页
+                    , limit: 5   //默认十条数据一页
+                    , limits: [10, 20, 30, 50]  //数据分页条
+                });
+                table.on('tool(demos)', function (obj) {
+                    var data = obj.data;
+                    if (obj.event === 'detail') {
+                        layer.msg('ID：' + data.id + ' 的查看操作');
+                    } else if (obj.event === 'del') {
+                        var deleteData = {id: data.id};
+                        xuqiu.deleteXQ(deleteData);
+                    } else if (obj.event === 'edit') {
+                        var editData = {title: '编辑', btn: '保存', data: data};
+                        xuqiu.editXQ(editData);
+                    }
+                });
+            },
+            editXQ: function (obj) {
+                var index = layer.open({
+                    type: 2, //类型，解析url
+                    closeBtn: 1, //关闭按钮是否显示 1显示0不显示
+                    title: obj.title, //页面标题
+                    shadeClose: true, //点击遮罩区域是否关闭页面
+                    shade: 0.8,  //遮罩透明度
+                    area: ['900px', '500px'],  //弹出层页面比例
+                    content: '/userEdit',
+                    success: function (layero, index) {
+                        var body = layer.getChildFrame('body', index);
+                        body.contents().find("#id").val(obj.data.id);
+                        body.contents().find("#userId").val(obj.data.userId);
+                        body.contents().find("#name").val(obj.data.name);
+                        body.contents().find("#workTime").val(obj.data.workTime);
+                        body.contents().find("#healthy").val(obj.data.healthy);
+                        body.contents().find("#skilled").val(obj.data.skilled);
+                        body.contents().find("#train").val(obj.data.train);
+                        rate.render({
+                            elem: body.contents().find("#healthy"),
+                            value: obj.data.healthy,
+                            setText: function (value) {
+                                body.contents().find("#healthy").attr("data", value);
+                            }
+                        })
+                        rate.render({
+                            elem: body.contents().find("#performance"),
+                            value: obj.data.performance,
+                            setText: function (value) {
+                                body.contents().find("#performance").attr("data", value);
+                            }
+                        })
+                        rate.render({
+                            elem: body.contents().find("#skilled"),
+                            value: obj.data.skilled,
+                            setText: function (value) {
+                                body.contents().find("#skilled").attr("data", value);
+                            }
+                        })
+                        rate.render({
+                            elem: body.contents().find("#train"),
+                            value: obj.data.train,
+                            setText: function (value) {
+                                body.contents().find("#train").attr("data", value);
+                            }
+                        })
+                        var treeSelect = {el: body.contents().find("#deptCode"),url:'/getTrainByDept/001',type:'get'};
+                        xuqiu.initTreeSelect(treeSelect);
+                        body.contents().find("#saveUser").click(function () {
+                            xuqiu.saveUser(body, index);
+                        });
+                    }
+                });
+            },
+            deleteXQ: function (obj) {
+                layer.confirm('你确定删除这条记录吗？', function (index) {
+                    $.post("/deleteTrainById/" + obj.id, function (ret) {
+                        xuqiu.initTable('001');
+                        layer.close(index);
+                    })
+                });
+            },
+            saveUser: function (body, index) {
+                var train = {
+                    id: body.contents().find("#id").val(),
+                    userId: body.contents().find("#userId").val(),
+                    name: body.contents().find("#name").val(),
+                    sex: body.contents().find(":radio[name='sex']:checked").val(),
+                    workTime: body.contents().find("#workTime").val(),
+                    healthy: body.contents().find("#healthy").attr("data"),
+                    deptCode: body.contents().find("#deptCode").val(),
+                    performance: body.contents().find("#performance").attr("data"),
+                    skilled: body.contents().find("#skilled").attr("data"),
+                    train: body.contents().find("#train").attr("data"),
+                    writeTime: body.contents().find("#writeTime").val()
+                };
+                $.ajax({
+                    url: "/saveTrain",
+                    type: "POST",
+                    data: JSON.stringify(train), //转JSON字符串
+                    dataType: 'json',
+                    contentType: 'application/json;charset=UTF-8', //contentType很重要
+                    success: function (ret) {
+                        xuqiu.initTable('001');
+                        layer.close(index);
+                    },
+                    error: function (ret) {
+                        console.log(JSON.stringify(ret));
+                    }
+                });
+            },
+            getTreeNodes: function () {
+                $.get("/dept/getDeptTree", function (ret) {
+                    layui.tree({
+                        elem: '#deptTree' //传入元素选择器
+                        , target: '_blank' //是否新选项卡打开（比如节点返回href才有效）
+                        , click: function (item) { //点击节点回调
+                            xuqiu.initTable(item.id);
+                        }
+                        , nodes: ret
+                    });
+                });
+            },
+            initTreeSelect: function (obj) {
+                treeSelect.render({
+                    // 选择器
+                    elem: obj.el,
+                    // 数据
+                    data: obj.url,
+                    // 请求头
+                    headers: {},
+                    // 异步加载方式：get/post，默认get
+                    type: obj.type,
+                    // 占位符
+                    placeholder: '请选择部门',
+                    // 是否开启搜索功能：true/false，默认false
+                    search: true,
+                    // 一些可定制的样式
+                    style: {
+                        folder: {
+                            enable: true
+                        },
+                        line: {
+                            enable: true
+                        }
+                    },
+                    // 点击回调
+                    click: function (d) {
+                        console.log(d);
+                    },
+                    // 加载完成后的回调函数
+                    success: function (d) {
+
+                    }
+                });
+            },
+            addXQ: function (obj) {
+                layer.open({
+                    type: 2, //类型，解析url
+                    closeBtn: 1, //关闭按钮是否显示 1显示0不显示
+                    title: obj.title, //页面标题
+                    shadeClose: true, //点击遮罩区域是否关闭页面
+                    shade: 0.8,  //遮罩透明度
+                    area: ['900px', '500px'],  //弹出层页面比例
+                    content: '/userEdit',
+                    success: function (layero, index) {
+                        var body = layer.getChildFrame('body', index);
+                        rate.render({
+                            elem: body.contents().find("#healthy"),
+                            value: 0,
+                            setText: function (value) {
+                                body.contents().find("#healthy").attr("data", value);
+                            }
+                        })
+                        rate.render({
+                            elem: body.contents().find("#performance"),
+                            value: 0,
+                            setText: function (value) {
+                                body.contents().find("#performance").attr("data", value);
+                            }
+                        })
+                        rate.render({
+                            elem: body.contents().find("#skilled"),
+                            value: 0,
+                            setText: function (value) {
+                                body.contents().find("#skilled").attr("data", value);
+                            }
+                        })
+                        rate.render({
+                            elem: body.contents().find("#train"),
+                            value: 0,
+                            setText: function (value) {
+                                body.contents().find("#train").attr("data", value);
+                            }
+                        })
+
+                        body.contents().find("#saveUser").click(function () {
+                            xuqiu.saveUser(body);
+                        });
+                    }
+                });
+            },
+
+        };
+        $("#addUser").click(function () {
+            var obj = {title: '新增', btn: '保存'};
+            xuqiu.addXQ(obj);
+        });
+        xuqiu.getTreeNodes();
+        xuqiu.initTable('001');
+    });
+</script>
+</body>
+</html>
