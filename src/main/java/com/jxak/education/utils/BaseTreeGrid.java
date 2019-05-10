@@ -11,5 +11,7 @@ public class BaseTreeGrid {
 
     private String parentId;//节点父id
 
+    private String url;
+
     private List<BaseTreeGrid> children;//孩子节点
 }

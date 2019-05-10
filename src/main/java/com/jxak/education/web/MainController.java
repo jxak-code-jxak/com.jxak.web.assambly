@@ -30,6 +30,7 @@ public class MainController {
             BaseTreeGrid baseTreeGrid =new BaseTreeGrid();
             baseTreeGrid.setId(menu.getId());
             baseTreeGrid.setName(menu.getName());
+            baseTreeGrid.setUrl(menu.getUrl());
             baseTreeGrid.setParentId(menu.getParentCode());
             baseTreeGrids.add(baseTreeGrid);
         }
