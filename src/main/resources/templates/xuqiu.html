@@ -5,7 +5,6 @@
     <title>培训需求</title>
     <link rel="stylesheet" th:href="@{/plugins/layui/css/layui.css}">
     <script th:src="@{/plugins/layui/layui.js}"></script>
-    <script th:src="@{/module/common.js}"></script>
 </head>
 <body>
 <div class="layui-fluid">
@@ -121,8 +120,6 @@
                                 body.contents().find("#train").attr("data", value);
                             }
                         })
-                        var treeSelect = {el: body.contents().find("#deptCode"),url:'/getTrainByDept/001',type:'get'};
-                        xuqiu.initTreeSelect(treeSelect);
                         body.contents().find("#saveUser").click(function () {
                             xuqiu.saveUser(body, index);
                         });
@@ -179,37 +176,7 @@
                 });
             },
             initTreeSelect: function (obj) {
-                treeSelect.render({
-                    // 选择器
-                    elem: obj.el,
-                    // 数据
-                    data: obj.url,
-                    // 请求头
-                    headers: {},
-                    // 异步加载方式：get/post，默认get
-                    type: obj.type,
-                    // 占位符
-                    placeholder: '请选择部门',
-                    // 是否开启搜索功能：true/false，默认false
-                    search: true,
-                    // 一些可定制的样式
-                    style: {
-                        folder: {
-                            enable: true
-                        },
-                        line: {
-                            enable: true
-                        }
-                    },
-                    // 点击回调
-                    click: function (d) {
-                        console.log(d);
-                    },
-                    // 加载完成后的回调函数
-                    success: function (d) {
 
-                    }
-                });
             },
             addXQ: function (obj) {
                 layer.open({
