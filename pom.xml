@@ -82,11 +82,11 @@
             <version>1.2.56</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/net.sf.jacob-project/jacob -->
-		<dependency>
-		    <groupId>net.sf.jacob-project</groupId>
-		    <artifactId>jacob</artifactId>
-		    <version>1.14.3</version>
-		</dependency>
+        <dependency>
+            <groupId>net.sf.jacob-project</groupId>
+            <artifactId>jacob</artifactId>
+            <version>1.14.3</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
