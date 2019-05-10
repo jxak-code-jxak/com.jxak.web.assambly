@@ -10,8 +10,9 @@
         <relativePath/>
     </parent>
     <groupId>com.jxak.education</groupId>
-    <artifactId>education</artifactId>
+    <artifactId>com.jxak.web.assambly</artifactId>
     <version>0.0.1</version>
+    <name>com.jxak.web.assambly</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
