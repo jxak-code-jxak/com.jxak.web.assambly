@@ -98,43 +98,45 @@
             laydate =layui.laydate,
             layer = layui.layer;
         var user ={
+            initTreeSelect:function (deptCode) {
+                treeSelect.render({
+                    // 选择器
+                    elem: '#deptCode',
+                    // 数据
+                    data: '/getTrainByDept/'+deptCode,
+                    // 请求头
+                    headers: {},
+                    // 异步加载方式：get/post，默认get
+                    type: 'get',
+                    // 占位符
+                    placeholder: '请选择部门',
+                    // 是否开启搜索功能：true/false，默认false
+                    search: true,
+                    // 一些可定制的样式
+                    style: {
+                        folder: {
+                            enable: true
+                        },
+                        line: {
+                            enable: true
+                        }
+                    },
+                    // 点击回调
+                    click: function (d) {
+                        console.log(d);
+                    },
+                    // 加载完成后的回调函数
+                    success: function (d) {
 
+                    }
+                });
+            }
         };
         laydate.render({
             elem: '#workTime',
             trigger: 'click'
         });
-        treeSelect.render({
-            // 选择器
-            elem: obj.el,
-            // 数据
-            data: obj.url,
-            // 请求头
-            headers: {},
-            // 异步加载方式：get/post，默认get
-            type: obj.type,
-            // 占位符
-            placeholder: '请选择部门',
-            // 是否开启搜索功能：true/false，默认false
-            search: true,
-            // 一些可定制的样式
-            style: {
-                folder: {
-                    enable: true
-                },
-                line: {
-                    enable: true
-                }
-            },
-            // 点击回调
-            click: function (d) {
-                console.log(d);
-            },
-            // 加载完成后的回调函数
-            success: function (d) {
 
-            }
-        });
         // 通过layer打开
         $('#layer').click(function () {
             layer.open({
@@ -153,6 +155,7 @@
                 console.log(d.treeId);
             });
         });
+        user.initTreeSelect('001');
     });
 </script>
 
