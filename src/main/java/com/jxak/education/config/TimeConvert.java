@@ -1,14 +1,19 @@
 package com.jxak.education.config;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+* @Description:     TIMESTAMP类型转换器
+* @Author:         liaoyuanjie
+* @CreateDate:     2019/5/10 10:56
+* @UpdateUser:     liaoyuanjie
+* @UpdateDate:     2019/5/10 10:56
+* @UpdateRemark:   修改内容
+* @Version:        1.0
+*/
 @Component
 public class TimeConvert implements Converter<String,Timestamp> {
     private static final List<String> formarts = new ArrayList<>(4);
