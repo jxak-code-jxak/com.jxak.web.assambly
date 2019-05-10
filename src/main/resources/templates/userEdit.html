@@ -98,12 +98,12 @@
             laydate =layui.laydate,
             layer = layui.layer;
         var user ={
-            initTreeSelect:function (deptCode) {
+            initTreeSelect:function () {
                 treeSelect.render({
                     // 选择器
                     elem: '#deptCode',
                     // 数据
-                    data: '/getTrainByDept/'+deptCode,
+                    data: '/dept/getDeptTree',
                     // 请求头
                     headers: {},
                     // 异步加载方式：get/post，默认get
@@ -155,7 +155,7 @@
                 console.log(d.treeId);
             });
         });
-        user.initTreeSelect('001');
+        user.initTreeSelect();
     });
 </script>
 
