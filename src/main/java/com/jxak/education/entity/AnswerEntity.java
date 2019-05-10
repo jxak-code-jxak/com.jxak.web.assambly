@@ -1,12 +1,10 @@
 package com.jxak.education.entity;
 
 import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.jxak.education.entity.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
 import javax.persistence.*;
 
 /**
@@ -24,7 +22,9 @@ import javax.persistence.*;
 @TableName("answer_info")
 @Table(name = "answer_info")
 public class AnswerEntity  extends BaseEntity{
-    @TableField("train_id")
+    
+	private static final long serialVersionUID = 973178612894288964L;
+	@TableField("train_id")
     @Column(name = "train_id")
     private Integer trainId;//需求表ID
     private String problem;//问题

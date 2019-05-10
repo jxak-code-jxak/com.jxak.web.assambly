@@ -1,7 +1,6 @@
 package com.jxak.education.entity;
 
 import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jxak.education.entity.base.BaseEntity;
@@ -9,9 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.Alias;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -30,7 +27,9 @@ import java.util.Date;
 @TableName("user_info")
 @Table(name = "user_info")
 public class UserEntity extends BaseEntity {
-    private String username;
+    
+	private static final long serialVersionUID = 2351204035678361012L;
+	private String username;
     private String password;
     private String sex;
     private String name;//姓名

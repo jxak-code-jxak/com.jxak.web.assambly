@@ -27,7 +27,10 @@ import java.sql.Timestamp;
 @Table(name = "plan_info")
 @TableName("plan_info")
 public class PlanEntity extends BaseEntity {
-    @Column(name = "plan_code")
+    
+	
+	private static final long serialVersionUID = 4778684192314097195L;
+	@Column(name = "plan_code")
     @TableField("plan_code")
     private String planCode;//计划编码
     @Column(name = "plan_time")

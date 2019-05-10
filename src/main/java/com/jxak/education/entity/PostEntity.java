@@ -1,6 +1,5 @@
 package com.jxak.education.entity;
 
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.jxak.education.entity.base.BaseEntity;
 import lombok.Data;
@@ -23,6 +22,8 @@ import javax.persistence.*;
 @TableName("post_info")
 @Table(name = "post_info")
 public class PostEntity extends BaseEntity {
-    private String code;
+    
+	private static final long serialVersionUID = 1056248118667526892L;
+	private String code;
     private String name;
 }

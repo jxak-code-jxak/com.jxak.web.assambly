@@ -1,7 +1,6 @@
 package com.jxak.education.entity;
 
 import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jxak.education.entity.base.BaseEntity;
@@ -27,7 +26,9 @@ import java.sql.Timestamp;
 @TableName("train_info")
 @Table(name = "train_info")
 public class TrainEntity extends BaseEntity{
-    @TableField("user_id")
+   
+	private static final long serialVersionUID = 533808743217210799L;
+	@TableField("user_id")
     @Column(name = "user_id")
     private String userId;
     private Integer performance;//工作表现

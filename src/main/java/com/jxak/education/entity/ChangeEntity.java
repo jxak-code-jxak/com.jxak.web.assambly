@@ -23,5 +23,7 @@ import javax.persistence.Table;
 @Table(name = "change_info")
 @TableName("change_info")
 public class ChangeEntity extends BaseEntity {
+	
+	private static final long serialVersionUID = 6230059061095965219L;
 
 }

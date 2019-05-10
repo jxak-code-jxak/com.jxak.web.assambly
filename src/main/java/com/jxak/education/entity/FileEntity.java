@@ -1,14 +1,12 @@
 package com.jxak.education.entity;
 
 import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jxak.education.entity.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -27,7 +25,9 @@ import java.sql.Timestamp;
 @TableName("file_upload")
 @Table(name = "file_upload")
 public class FileEntity extends BaseEntity{
-    private String filename;
+    
+	private static final long serialVersionUID = 7464307588189927927L;
+	private String filename;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField("upload_time")
