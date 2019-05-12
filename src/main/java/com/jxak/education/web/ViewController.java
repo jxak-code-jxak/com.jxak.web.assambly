@@ -30,4 +30,12 @@ public class ViewController {
     public String userEdit(){
         return "/userEdit";
     }
+    @RequestMapping(value = "/error/404",method = RequestMethod.GET)
+    public String to404(){
+        return "/error/404";
+    }
+    @RequestMapping(value = "/error/500",method = RequestMethod.GET)
+    public String to500(){
+        return "/error/500";
+    }
 }

@@ -9,11 +9,12 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @MapperScan(basePackages = {"com.jxak.education.dao"})
 @SpringBootApplication
 @EnableTransactionManagement
-public class EducationApp extends SpringBootServletInitializer {
+public class EducationApp extends SpringBootServletInitializer implements WebMvcConfigurer {
     /**
      * 项目运行启动
      * @param args
