@@ -2,16 +2,14 @@ package com.jxak.education.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Calendar;
-import java.util.Date;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPConnectionClosedException;
-import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * @ClassName:：FTPUtils 
@@ -19,16 +17,13 @@ import org.springframework.beans.factory.annotation.Value;
  * @author ：yangth  
  * @date ：2019年5月10日 下午5:20:47 
  */
+@Component
 public class FTPUtils  {  
-
-	public static final int imageCutSize=300;
 	
-	public static final String DIRSPLIT="/";
+	private static final Logger log= LoggerFactory.getLogger(FTPUtils.class);
 	
     private FTPClient ftpClient = new FTPClient();
 	
-    private static final Logger log= LoggerFactory.getLogger(FTPUtils.class);
-    
     /**
              * 用户名
      */
@@ -41,8 +36,9 @@ public class FTPUtils  {
     @Value("${ftp.password}")
     private String passWord;
     
+    
     /**
-             *主机(IP地址)
+             *主机
      */
     @Value("${ftp.host}")  
     private String ip;
@@ -52,22 +48,6 @@ public class FTPUtils  {
      */
     @Value("${ftp.port}")
     private int port;
-    
-    /**
-             * 存放路径
-     */
-    @Value("${ftp.filepath}")
-    private String CURRENT_DIR;     
- 
-    
-    public String getCURRENT_DIR() {
-        return CURRENT_DIR;
-    }
- 
- 
-    public void setCURRENT_DIR(String cURRENTDIR) {
-        CURRENT_DIR = cURRENTDIR;
-    }
  
     
     /**
@@ -78,7 +58,7 @@ public class FTPUtils  {
      * @return
      * @throws IOException
      */
-    public boolean uploadToFtp(InputStream inStream, String fileName,boolean needDelete)throws FTPConnectionClosedException, IOException,Exception {
+    public boolean uploadFile(InputStream inStream, String fileName,boolean needDelete)throws FTPConnectionClosedException, IOException,Exception {
         boolean returnValue = false;
         try {
             connectToServer();
@@ -86,10 +66,10 @@ public class FTPUtils  {
             int reply = ftpClient.getReplyCode();   
             if(!FTPReply.isPositiveCompletion(reply)){   
                 ftpClient.disconnect();   
-                throw new IOException(String.format("FTP服务器连接失败，请检查主机地址[%s]是否正确！", ip));   
+                throw new IOException(String.format("FTP服务器连接失败，请检查主机地址[%s]是否正确！",ip));   
             }
             ftpClient.enterLocalPassiveMode();
-            returnValue = ftpClient.storeFile(fileName, inStream);
+            returnValue = ftpClient.storeFile(new String(fileName.getBytes("GBK"),"iso-8859-1"), inStream);
             if(needDelete){
                 ftpClient.deleteFile(fileName);
             }
@@ -122,7 +102,7 @@ public class FTPUtils  {
     
     
     /**
-     * @Comment功能：根据文件名称，下载文件流
+     * @Comment功能：根据文件名称下载文件流
      * @param filename
      * @return
      * @throws IOException
@@ -136,11 +116,10 @@ public class FTPUtils  {
             int reply = ftpClient.getReplyCode();   
             if(!FTPReply.isPositiveCompletion(reply)){   
                 ftpClient.disconnect();
-                throw new IOException("failed to connect to the FTP Server:"+ip);   
+                throw new IOException(String.format("FTP服务器连接失败，请检查主机地址[%s]是否正确！",ip));   
             }
-            ftpClient.changeWorkingDirectory(CURRENT_DIR);
+            //ftpClient.changeWorkingDirectory(CURRENT_DIR);
             in=ftpClient.retrieveFileStream(filename);
- 
         } catch (FTPConnectionClosedException e) {
         	log.error("FTP连接被关闭！", e);
             throw e;
@@ -152,7 +131,7 @@ public class FTPUtils  {
     
     /**
      * @Title：setFileType 
-     * @Comment：设置传输文件的类型[文本文件或者二进制文件]
+     * @Comment：设置传输文件的类型
      * @author：setFileType
      * @param : fileType 
      * @return ：void 
@@ -162,7 +141,7 @@ public class FTPUtils  {
         try {
             ftpClient.setFileType(fileType);
         } catch (Exception e) {
-        	log.error("ftp设置传输文件的类型时失败！", e);
+        	log.error("FTP设置传输文件的类型时失败！", e);
         }
     }
     
@@ -180,7 +159,7 @@ public class FTPUtils  {
                 ftpClient.disconnect();
             }
         } catch (Exception e) {
-        	log.error("ftp连接关闭失败！", e);
+        	log.error("FTP连接关闭失败！", e);
         }
     }
     
@@ -194,114 +173,25 @@ public class FTPUtils  {
      * @throws
      */
     private void connectToServer() throws FTPConnectionClosedException,Exception { 
-        if (!ftpClient.isConnected()) { 
+        if (!ftpClient.isConnected()) {
             int reply; 
             try { 
                 ftpClient=new FTPClient();
                 ftpClient.connect(ip,port);
-                ftpClient.login(userName,passWord);
+                ftpClient.login("test","test");
                 reply = ftpClient.getReplyCode(); 
- 
-                if (!FTPReply.isPositiveCompletion(reply)) { 
+                System.out.println(reply);
+                if (!FTPReply.isPositiveCompletion(reply)){
                     ftpClient.disconnect(); 
-                    log.info("connectToServer FTP server refused connection."); 
+                    log.info("连接FTP服务器失败，请检查连接配置！"); 
                 } 
-            
             }catch(FTPConnectionClosedException ex){
-                log.error("服务器:IP："+ip+"没有连接数！there are too many connected users,please try later", ex);
+                log.error("连接FTP服务器失败！", ex);
                 throw ex;
             }catch (Exception e) { 
-                log.error("登录ftp服务器【"+ip+"】失败", e); 
+                log.error("连接FTP服务器失败！", e); 
                 throw e;
             } 
         } 
     } 
-   
-    /**
-     * @Title：existDirectory 
-     * @Comment：检查文件目录是否存在
-     * @author：existDirectory
-     * @param ：path
-     * @param ：@return
-     * @param ：@throws IOException 
-     * @return ：boolean 
-     * @throws
-     */
-    public boolean existDirectory(String path) throws IOException {
-        boolean flag = false;  
-        FTPFile[] ftpFileArr = ftpClient.listFiles(path);  
-        for (FTPFile ftpFile : ftpFileArr) {  
-            if (ftpFile.isDirectory()  
-                    && ftpFile.getName().equalsIgnoreCase(path)) {  
-                flag = true;  
-                break;  
-            }  
-        }  
-        return flag;  
-    } 
-    
-    /**
-     * @Title：createDirectory 
-     * @Comment：创建文件目录
-     * @author： yangtinghua 
-     * @param ： pathName
-     * @param ：@return
-     * @param ：@throws IOException 
-     * @return ：boolean 
-     * @throws
-     */
-    public boolean createDirectory(String pathName) throws IOException { 
-    	boolean isSuccess=false;
-    	try{
-    		isSuccess=ftpClient.makeDirectory(pathName);
-    	}catch(Exception e){
-    		e.printStackTrace();
-    	}
-        return isSuccess;  
-    }
-    
-    /**
-     * @Title：getExtention 
-     * @Comment：根据拓展名读取文件
-     * @author：getNoPointExtention
-     * @param ：fileName
-     * @return ：String 
-     * @throws
-     */
-    public static String getExtention(String fileName) {
-        int pos = fileName.lastIndexOf(".");
-        return fileName.substring(pos);
-    }
-    
-    /**
-     * @Title：getNoPointExtention 
-     * @Comment：根据拓展名读取文件
-     * @author：getNoPointExtention
-     * @param ：fileName
-     * @return ：String 
-     * @throws
-     */
-    public static String getNoPointExtention(String fileName) {
-        int pos = fileName.lastIndexOf(".");
-        return fileName.substring(pos+1);
-    }
-    
-    /**
-     * @Title：getDirectory 
-     * @Comment：根据当前时间读取文件目录
-     * @author：  yangtinghua
-     * @param ：  currentDate 当前时间
-     * @return ：String 
-     * @throws
-     */
-    public static String getDirectory(Date currentDate){
-        Calendar cal = Calendar.getInstance();
-        if(null!=currentDate){
-            cal.setTime(currentDate);
-        }
-        int currentYear = cal.get(Calendar.YEAR);
-        int currentMouth = cal.get(Calendar.MONTH) + 1;
-        int currentDay = cal.get(Calendar.DAY_OF_MONTH) ;
-        return currentYear+FTPUtils.DIRSPLIT+currentMouth+FTPUtils.DIRSPLIT+currentDay;
-    }
 }

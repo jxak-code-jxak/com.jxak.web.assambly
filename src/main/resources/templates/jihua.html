@@ -15,34 +15,20 @@
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
             <table id="pxJH" lay-filter="jhEdit" class="layui-table"></table>
-            <script type="text/html" id="toolbarDemo">
-                <div class="layui-form">
-                    <div class="layui-form-item">
-                        <div class="layui-input-inline">
-                            <select onchange="selectType();" lay-filter="brickType" id="selectType" name="quiz1">
-                                <option value="0" selected="">按年份查询</option>
-                                <option value="1">按月份查询</option>
-                                <option value="2">按日期查询</option>
-                            </select>
-                        </div>
-                        <div class="layui-input-inline">
-                            <input type="text" class="layui-input" id="yearSelect" placeholder="yyyy">
-                        </div>
-                        <div class="layui-input-inline">
-                            <input type="text" class="layui-input" id="monthSelect" placeholder="yyyyMM">
-                        </div>
-                        <div class="layui-input-inline">
-                            <input type="text" class="layui-input" id="dateSelect" placeholder="yyyyMMdd">
-                        </div>
-                    </div>
+            <script type="text/html" id="jhToolbar" lay-filter="jhToolbar">
+                <div class="layui-btn-container">
+                    <button TYPE="button" lay-event="add" class="layui-btn layui-btn-sm">新增</button>
                 </div>
+            </script>
+            <script type="text/html" id="jhBar" lay-filter="jhEdit">
+                <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>
+                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
             </script>
         </div>
         <div class="layui-tab-item">
-            <fieldset class="layui-elem-field layui-field-title">
-                <button id="addX" class="layui-btn">新增<span class="layui-badge-dot layui-bg-orange"></span></button>
-            </fieldset>
-            <table class="layui-table"></table>
+            <table id="pxBG" lay-filter="bgEdit" class="layui-table"></table>
+            <script type="text/html" id="bgBar"></script>
         </div>
     </div>
 </div>
@@ -59,7 +45,7 @@
                 table.render({
                     elem: '#pxJH'  //绑定table id
                     , url: '/getPlanList'  //数据请求路径
-                    , toolbar: '#toolbarDemo'
+                    , toolbar: '#jhToolbar'
                     , cellMinWidth: 80
                     , cols: [[
                         {checkbox: true, fixed: true},
@@ -69,12 +55,13 @@
                         {field: 'trainObject', title: '培训对象', sort: true},
                         {field: 'trainType', title: '培训方式', sort: true},
                         {field: 'state', title: '状态', sort: true},
-                        {title: '操作', width: 178, toolbar: '#editBar', fixed: "right", align: "center"}
+                        {title: '操作', width: 178, toolbar: '#jhBar', fixed: "right", align: "center"}
                     ]]
                     , page: true   //开启分页
                     , limit: 5   //默认十条数据一页
                     , limits: [10, 20, 30, 50]  //数据分页条
                 });
+                //监听表格中的工具
                 table.on('tool(jhEdit)', function (obj) {
                     var data = obj.data;
                     if (obj.event === 'detail') {
@@ -85,8 +72,17 @@
                     } else if (obj.event === 'edit') {
                         var editData = {title: '编辑', btn: '保存', data: data};
                         xuqiu.editXQ(editData);
+                    }else if (obj.event==='add'){
+                        alert(123)
                     }
                 });
+                //监听表格头部工具
+                table.on('toolbar(jhEdit)',function (obj) {
+                    //新增数据
+                    if (obj.even()==='add'){
+
+                    }
+                })
                 //年选择器
                 laydate.render({
                     elem: '#yearSelect'
@@ -102,24 +98,39 @@
                 laydate.render({
                     elem: '#dateSelect'
                 });
-                form.on('select(brickType)', function(data){
-                    var t=data.value;
-                    $("#yearSelect").hide();
-                    $("#monthSelect").hide();
-                    $("#dateSelect").hide();
-                    if (t==0){
-                        $("#yearSelect").show();
-                    }
-                    if (t==1){
-                        $("#monthSelect").show();
-                    }
-                    if (t==2){
-                        $("#dateSelect").show();
-                    }
+            },
+            initBG:function () {
+                table.render({
+                    elem: '#pxBG'  //绑定table id
+                    , url: '/getChangeList'  //数据请求路径
+                    , toolbar: '#bgBar'
+                    , cellMinWidth: 80
+                    , cols: [[
+                        {checkbox: true, fixed: true},
+                        {field: 'planCode', title: '计划编码',templet: '<div>{{d.planEntity.planCode}}</div>', sort: true},
+                        {field: 'changeState', title: '变更状态', sort: true},
+                        {field: 'planTime', title: '时间',templet: '<div>{{d.planEntity.planTime}}</div>', sort: true},
+                        {field: 'planName', title: '计划名称', templet: '<div>{{d.planEntity.planName}}</div>',sort: true},
+                        {field: 'planObject', title: '培训对象',templet: '<div>{{d.planEntity.planObject}}</div>', sort: true},
+                        {field: 'planType', title: '培训方式',templet: '<div>{{d.planEntity.planType}}</div>', sort: true},
+                        {field: 'remark', title: '备注',templet: '<div>{{d.planEntity.planCode}}</div>', sort: true},
+                    ]]
+                    , page: true   //开启分页
+                    , limit: 5   //默认十条数据一页
+                    , limits: [10, 20, 30, 50]  //数据分页条
                 });
             },
+            /**
+             * 新增培训计划
+             */
+            addJH:function () {
+                layui.open({
+
+                });
+            }
         };
         xqJH.initJH();
+        xqJH.initBG();
     });
     function selectType() {
         alert(123)

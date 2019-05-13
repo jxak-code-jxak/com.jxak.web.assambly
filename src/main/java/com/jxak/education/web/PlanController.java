@@ -1,6 +1,8 @@
 package com.jxak.education.web;
 
+import com.jxak.education.entity.ChangeEntity;
 import com.jxak.education.entity.PlanEntity;
+import com.jxak.education.service.ChangeService;
 import com.jxak.education.service.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,8 @@ import java.util.Map;
 public class PlanController {
     @Autowired
     PlanService planService;
+    @Autowired
+    ChangeService changeService;
     /**
      * 培训计划列表
      * @return
@@ -26,6 +30,16 @@ public class PlanController {
         objectMap.put("count",planEntities.size());
         objectMap.put("msg","");
         objectMap.put("code",0);
+        return objectMap;
+    }
+    @GetMapping(value = "/getChangeList")
+    public Map<String,Object> getChangeListPage(){
+        Map<String,Object> objectMap=new HashMap<>();
+        List<ChangeEntity> changeEntities=changeService.getChangeList();
+        objectMap.put("data",changeEntities);
+        objectMap.put("count",changeEntities.size());
+        objectMap.put("code",0);
+        objectMap.put("msg","");
         return objectMap;
     }
 }

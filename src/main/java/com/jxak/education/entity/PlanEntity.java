@@ -27,8 +27,8 @@ import java.sql.Timestamp;
 @Table(name = "plan_info")
 @TableName("plan_info")
 public class PlanEntity extends BaseEntity {
-    
-	
+
+
 	private static final long serialVersionUID = 4778684192314097195L;
 	@Column(name = "plan_code")
     @TableField("plan_code")
@@ -43,9 +43,9 @@ public class PlanEntity extends BaseEntity {
     private String planName;//计划名称
     @Column(name = "plan_object")
     @TableField("plan_object")
-    private String trainObject;//培训对象
+    private String planObject;//培训对象
     @Column(name = "plan_type")
     @TableField("plan_type")
-    private Integer trainType;//培训方式
+    private Integer planType;//培训方式
     private Integer state;
 }
