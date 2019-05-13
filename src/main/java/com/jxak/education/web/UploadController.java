@@ -2,8 +2,7 @@ package com.jxak.education.web;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jxak.education.dao.FileUploadDao;
-import com.jxak.education.entity.FileEntity;
-import com.jxak.education.service.UserService;
+import com.jxak.education.entity.Attachment;
 import com.jxak.education.utils.FileUtils;
 import com.jxak.education.utils.GuidUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,25 +24,26 @@ public class UploadController {
     @Autowired
     FileUploadDao fileUploadDao;
     /**
-     * 上传文件
+             * 上传文件
      * @param file
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
     @PostMapping(value = "/file/upload")
     public Map<String,Object> fileUpload(@RequestParam("file") MultipartFile file){
+    	String path = environment.getProperty("upload.path");
         Map<String,Object> objectMap=new HashMap<>();
         String fileName = file.getOriginalFilename();
-        FileEntity fileUpload=new FileEntity();
-        fileUpload.setId(GuidUtils.getCode());
-        fileUpload.setFilename(fileName);
-        fileUpload.setUploadTime(new Timestamp(new Date().getTime()));
-        fileUpload.setCreateUser("admin");
-        fileUploadDao.insert(fileUpload);
-        //文件上传的位置
-        String targetPath =environment.getProperty("upload.path");
+        Attachment att=new Attachment();
+        att.setId(GuidUtils.getCode());
+        att.setAttrName(fileName);
+        att.setCreateTime(new Timestamp(new Date().getTime()));
+        att.setCreateUser("admin");
+        att.setAttrSuffix(fileName.substring(fileName.indexOf(".")));
+        att.setFullPath(path+fileName);
+        fileUploadDao.insert(att);
         try {
-            FileUtils.uploadFile(file.getBytes(),targetPath,fileName);
+            FileUtils.uploadFile(file.getBytes(),path,fileName);
             objectMap.put("state",true);
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,7 +122,7 @@ public class UploadController {
     @GetMapping(value = "/fileExist/{id}")
     public Map<String,Object> fileExist(@PathVariable String id){
         Map<String,Object> objectMap=new HashMap<>();
-        FileEntity fileEntity = fileUploadDao.selectById(id);
+        Attachment fileEntity = fileUploadDao.selectById(id);
         if (fileEntity!=null){
             objectMap.put("state",true);
             objectMap.put("data",fileEntity);

@@ -97,8 +97,8 @@
                             "                            </div>\n" +
                             "                        </div>\n" +
                             "                    </li>");
-                        $li.find("span[name='uploadTime']").text(dataList[i].uploadTime);
-                        $li.find("span[name='filename']").text(dataList[i].filename);
+                        $li.find("span[name='uploadTime']").text(dataList[i].createTime);
+                        $li.find("span[name='filename']").text(dataList[i].attrName);
                         $("#fileList").append($li);
                     }
                 });
