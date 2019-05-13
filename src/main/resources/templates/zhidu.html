@@ -32,40 +32,17 @@
 				<ul id="fileList" class="layui-card-body">
                 </ul>
              </td>
-			<td>
-
+			<td id="previe_t">
 			</td>
 		</tr>
 	</table>
 </div>
-<!--
-<div class="layui-container">
-    <div class="layui-row">
-        <div class="layui-col-xs3">
-            <div class="layui-card">
-                <div class="layui-card-header"><button id="fileUploads" class="layui-btn">导入<span class="layui-badge-dot layui-bg-orange"></span>
-                </button>
-                    <button id="downloadFile" type="button" class="layui-btn">导出<span class="layui-badge-dot layui-bg-orange"></span></button></div>
-                <ul id="fileList" class="layui-card-body">
-                </ul>
-            </div>
-        </div>
-        <div class="layui-col-xs9">
-            <div style=" width: 100%; height: 100%;">
-                <embed src="/preview?pdfFilePath=C:/upload/廖远杰个人简历.pdf"
-                       type="application/pdf" style="overflow: auto; width: 100%; height: 800px;" />
-            </div>
-        </div>
-    </div>
-</div>
--->
 <script th:src="@{/plugins/layui/layui.js}"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="http://jhyt.oss-cn-shanghai.aliyuncs.com/images/1531367199089_PDFObject.js"></script>
 <script>
     layui.use('upload', function () {
-        var $ = layui.jquery
-            , upload = layui.upload;
-        //指定允许上传的文件类型
+        var $ = layui.jquery,upload = layui.upload;
         upload.render({
             elem: '#fileUploads'
             , url: '/file/upload/'
@@ -79,7 +56,6 @@
                 alert(JSON.stringify(res));
             }
         });
-
         var zhidu = {
             getFileList: function () {
                 $.get("/file/getFileList", function (ret) {
@@ -87,7 +63,7 @@
                     $("#fileList>").remove();
                     for (var i = 0; i < dataList.length; i++) {
                         var $li = $("<li style='cursor: pointer;background-color:#1E90FF;margin-top:10px;color:#fff' class=\"bottomLine\">\n" +
-                            "                        <div class=\"layui-row\">\n" +
+                            "                        <div onClick='preview(\""+ dataList[i].fullPath+"\")' class=\"layui-row\">\n" +
                             "                            <div class=\"layui-col-xs2\">\n" +
                             "                                <input id="+dataList[i].id+" type=\"radio\" style='background-color:#1E90FF;border:none;margin-top:18px;margin-left:10px' name=\"fileSelect\">\n" +
                             "                            </div>\n" +
@@ -114,8 +90,8 @@
                        var form=$("<form>");
                        form.attr("style","display:none");
                        form.attr("target","");
-                       form.attr("method","post");//提交方式为post
-                       form.attr("action","/download/"+ret.data.filename);//定义action
+                       form.attr("method","post");
+                       form.attr("action","/download/"+ret.data.filename);
                        $("body").append(form);
                        form.submit();
                    }
@@ -127,10 +103,10 @@
         });
         zhidu.getFileList();
     });
-
-    /**
-     * 刷新数据；列表
-     */
+    
+    function preview(path){
+    	$('#previe_t').html("<embed src='/preview?pdfFilePath="+path+"' type='application/pdf' style='overflow: auto; width: 100%; height: 800px;'/>");
+    }
     function loadList() {
 
     }
