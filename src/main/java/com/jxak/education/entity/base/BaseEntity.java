@@ -21,7 +21,7 @@ public class BaseEntity implements Serializable {
 	private static final long serialVersionUID = 5010777754852182334L;
 	
 	/**
-	 * 主键
+	   * 主键
 	 */
 	@Id
     @TableId
@@ -30,34 +30,34 @@ public class BaseEntity implements Serializable {
     private String id;
 	
 	/**
-	 * 创建用户
+	   * 创建用户
 	 */
-    @TableField("create_user")
-    @Column(name = "create_user")
+    @TableField("create_user_")
+    @Column(name = "create_user_")
     private String createUser;
     
     /**
-     * 创建时间
+             * 创建时间
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") //入参
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")//出参
-    @TableField("create_time")
-    @Column(name = "create_time")
-    
-    /**
-     * 更新时间
-     */
-    private Date createTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField("update_time")
-    @Column(name = "update_time")
+    @TableField("create_time_")
+    @Column(name = "create_time_")
+    private Date createTime;
+    
+    /**
+             * 更新时间
+     */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    @TableField("update_time_")
+    @Column(name = "update_time_")
     private Date updateTime;
     
     /**
-     * 更新用户
+             * 更新用户
      */
-    @TableField("update_user")
-    @Column(name = "update_user")
+    @TableField("update_user_")
+    @Column(name = "update_user_")
     private String updateUser;
 }
