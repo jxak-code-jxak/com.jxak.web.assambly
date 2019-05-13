@@ -27,7 +27,7 @@ public class BaseEntity implements Serializable {
     @TableId
     @GeneratedValue
     @Column(length = 32)
-    private String id;
+    private String id; 
 	
 	/**
 	   * 创建用户
