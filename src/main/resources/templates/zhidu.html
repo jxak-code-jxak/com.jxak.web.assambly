@@ -45,7 +45,7 @@
         var $ = layui.jquery,upload = layui.upload;
         upload.render({
             elem: '#fileUploads'
-            , url: '/file/upload/'
+            , url: '/file/upload'
             , accept: 'file'
             , auto: true
             , done: function (res) {
@@ -83,7 +83,7 @@
                 var id = $("input[name='fileSelect']:checked").attr("id");
                 if (id==undefined){
                     alert("请选择文件");
-                    return; 
+                    return;
                 }
                 $.get("/fileExist/"+id,function (ret) {
                    if (ret.state){
@@ -103,7 +103,7 @@
         });
         zhidu.getFileList();
     });
-    
+
     function preview(path){
     	$('#previe_t').html("<embed src='/preview?pdfFilePath="+path+"' type='application/pdf' style='overflow: auto; width: 100%; height: 800px;'/>");
     }
