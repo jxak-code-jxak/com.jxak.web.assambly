@@ -21,12 +21,9 @@ public class PlanService extends ServiceImpl<PlanDao, PlanEntity> {
     @Autowired
     PlanDao planDao;
 
-    public List<PlanEntity> getPlanListPage() {
-//        QueryWrapper<OauthOrganization> queryWrapper =  new QueryWrapper<>();
-//        queryWrapper.orderByDesc("id");
-
-        Page<PlanEntity> page = new Page<>(1, 5);  // 查询第1页，每页返回5条
-        return planDao.selectPage(page, new EntityWrapper<>());
+    public List<PlanEntity> getPlanListPage(int page,int limit) {
+        Page<PlanEntity> planEntityPage = new Page<>(page, limit);  // 查询第1页，每页返回5条
+        return planDao.selectPage(planEntityPage, new EntityWrapper<>());
     }
     @Transactional(rollbackFor = Exception.class)
     public boolean savePlan(PlanEntity planEntity){

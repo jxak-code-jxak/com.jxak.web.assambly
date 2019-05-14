@@ -1,5 +1,6 @@
 package com.jxak.education.web;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jxak.education.entity.ChangeEntity;
 import com.jxak.education.entity.PlanEntity;
 import com.jxak.education.service.ChangeService;
@@ -22,11 +23,10 @@ public class PlanController {
      * @return
      */
     @GetMapping(value = "/getPlanList")
-    public Map<String,Object> getPlanListPage(){
+    public Map<String,Object> getPlanListPage(@RequestParam int page,@RequestParam int limit){
         Map<String,Object> objectMap=new HashMap<>();
-        List<PlanEntity> planEntities =planService.getPlanListPage();
-        objectMap.put("data",planEntities);
-        objectMap.put("count",planEntities.size());
+        objectMap.put("data",planService.getPlanListPage(page,limit));
+        objectMap.put("count",planService.selectCount(new EntityWrapper<>()));
         objectMap.put("msg","");
         objectMap.put("code",0);
         return objectMap;
@@ -34,9 +34,8 @@ public class PlanController {
     @GetMapping(value = "/getChangeList")
     public Map<String,Object> getChangeListPage(){
         Map<String,Object> objectMap=new HashMap<>();
-        List<ChangeEntity> changeEntities=changeService.getChangeList();
-        objectMap.put("data",changeEntities);
-        objectMap.put("count",changeEntities.size());
+        objectMap.put("data",changeService.getChangeList());
+        objectMap.put("count",changeService.selectCount(new EntityWrapper<>()));
         objectMap.put("code",0);
         objectMap.put("msg","");
         return objectMap;

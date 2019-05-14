@@ -1,5 +1,6 @@
 package com.jxak.education.web;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jxak.education.entity.TrainEntity;
 import com.jxak.education.service.TrainService;
 import com.jxak.education.service.UserService;
@@ -22,7 +23,7 @@ public class TrainController {
     public Map<String,Object> getTrainList(){
         Map<String,Object> objectMap=new HashMap<>();
         objectMap.put("data",trainService.getTrainList());
-        objectMap.put("count",0);
+        objectMap.put("count",trainService.selectCount(new EntityWrapper<>()));
         objectMap.put("msg","");
         objectMap.put("code",0);
         return objectMap;
@@ -30,9 +31,8 @@ public class TrainController {
     @GetMapping(value = "/getTrainByDept/{deptCode}")
     public Map<String,Object> getTrainByDept(@PathVariable String deptCode){
         Map<String,Object> objectMap=new HashMap<>();
-        List<TrainEntity> entities=trainService.getTrainByDept(deptCode);
-        objectMap.put("data",entities);
-        objectMap.put("count",entities.size());
+        objectMap.put("data",trainService.getTrainByDept(deptCode));
+        objectMap.put("count",trainService.selectCount(new EntityWrapper<>()));
         objectMap.put("msg","");
         objectMap.put("code",0);
         return objectMap;
