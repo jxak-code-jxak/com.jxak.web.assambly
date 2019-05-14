@@ -1,6 +1,7 @@
 package com.jxak.education;
 
 
+import com.baomidou.mybatisplus.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.plugins.PerformanceInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
@@ -47,6 +48,7 @@ public class EducationApp extends SpringBootServletInitializer implements WebMvc
     @Bean
     public PaginationInterceptor paginationInterceptor() {
         PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
+        paginationInterceptor.setDialectType("mysql");
         return paginationInterceptor;
     }
 
@@ -63,4 +65,13 @@ public class EducationApp extends SpringBootServletInitializer implements WebMvc
         performanceInterceptor.setProperties(properties);
         return performanceInterceptor;
     }
+
+    /**
+     * mybatis plus解决乐观锁,实体字段必须增加version字段
+     * @return
+     */
+//    @Bean
+//    public OptimisticLockerInterceptor optimisticLockerInterceptor() {
+//        return new OptimisticLockerInterceptor();
+//    }
 }

@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -28,10 +30,15 @@ public class PlanService extends ServiceImpl<PlanDao, PlanEntity> {
     }
     @Transactional(rollbackFor = Exception.class)
     public boolean savePlan(PlanEntity planEntity){
-        if (planEntity.getId().equals("")){
+        if (planEntity.getId()==null||planEntity.getId().equals("")){
             planEntity.setId(GuidUtils.getCode());
         }
+        planEntity.setPlanTime(new Timestamp(new Date().getTime()));
         this.insertOrUpdate(planEntity);
+        return true;
+    }
+    public boolean deletePlanById(String id){
+        this.deleteById(id);
         return true;
     }
 
