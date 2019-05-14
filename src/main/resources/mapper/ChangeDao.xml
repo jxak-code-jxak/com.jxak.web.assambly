@@ -21,6 +21,6 @@
         </association>
     </resultMap>
     <select id="getChangeList" resultMap="Change_Plan">
-        select t1.id,t1.plan_id,t1.change_state,t2.plan_code,t2.plan_name,t2.plan_object,t2.plan_time,t2.plan_type from change_info t1 left join plan_info t2 on t1.plan_id=t2.id
+        select t1.id,t1.plan_id,t1.change_state,t1.remark,t2.plan_code,t2.plan_name,t2.plan_object,t2.plan_time,t2.plan_type from change_info t1 left join plan_info t2 on t1.plan_id=t2.id
     </select>
 </mapper>

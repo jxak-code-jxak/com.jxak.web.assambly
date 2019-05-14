@@ -14,12 +14,18 @@
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
+            <okToolbar>
+                <button class="layui-btn" id="addUser">
+                    <i class="iconfont icon-tianjiayonghu1"></i> 添加
+                </button>
+                <button class="layui-btn layui-btn-danger" id="batchDel">
+                    <i class="iconfont icon-shanchu"></i> 删除选中数据
+                </button>
+                <button class="layui-btn" id="export">
+                    <i class="iconfont icon-export"></i> 导出
+                </button>
+            </okToolbar>
             <table id="pxJH" lay-filter="jhEdit" class="layui-table"></table>
-            <script type="text/html" id="jhToolbar" lay-filter="jhToolbar">
-                <div class="layui-btn-container">
-                    <button TYPE="button" lay-event="add" class="layui-btn layui-btn-sm">新增</button>
-                </div>
-            </script>
             <script type="text/html" id="jhBar" lay-filter="jhEdit">
                 <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>
                 <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
@@ -27,8 +33,12 @@
             </script>
         </div>
         <div class="layui-tab-item">
-            <table id="pxBG" lay-filter="bgEdit" class="layui-table"></table>
-            <script type="text/html" id="bgBar"></script>
+            <okToolbar>
+                <button class="layui-btn">
+                    <i class="iconfont icon-export"></i> 导出
+                </button>
+            </okToolbar>
+            <table id="pxBG" class="layui-table"></table>
         </div>
     </div>
 </div>
@@ -45,7 +55,6 @@
                 table.render({
                     elem: '#pxJH'  //绑定table id
                     , url: '/getPlanList'  //数据请求路径
-                    , toolbar: '#jhToolbar'
                     , cellMinWidth: 80
                     , cols: [[
                         {checkbox: true, fixed: true},
@@ -58,8 +67,11 @@
                         {title: '操作', width: 178, toolbar: '#jhBar', fixed: "right", align: "center"}
                     ]]
                     , page: true   //开启分页
-                    , limit: 5   //默认十条数据一页
+                    , limit: 10   //默认十条数据一页
                     , limits: [10, 20, 30, 50]  //数据分页条
+                    , done: function (res) {
+
+                    }
                 });
                 //监听表格中的工具
                 table.on('tool(jhEdit)', function (obj) {
@@ -68,7 +80,7 @@
                         layer.msg('ID：' + data.id + ' 的查看操作');
                     } else if (obj.event === 'del') {
                         var deleteData = {id: data.id};
-                        xqJH.deleteXQ(deleteData);
+                        xqJH.deleteJH(deleteData);
                     } else if (obj.event === 'edit') {
                         var editData = {title: '编辑', btn: '保存', data: data, type: obj.event};
                         xqJH.opEditWin(editData);
@@ -78,8 +90,7 @@
                 table.on('toolbar(jhEdit)', function (obj) {
                     //新增数据
                     if (obj.event === 'add') {
-                        var editData = {title: '新增', btn: '保存', data: '', type: obj.event};
-                        xqJH.opEditWin(editData);
+
                     }
                 })
                 //年选择器
@@ -102,25 +113,19 @@
                 table.render({
                     elem: '#pxBG'  //绑定table id
                     , url: '/getChangeList'  //数据请求路径
-                    , toolbar: '#bgBar'
                     , cellMinWidth: 80
                     , cols: [[
-                        {checkbox: true, fixed: true},
-                        {field: 'planCode', title: '计划编码', templet: '<div>{{d.planEntity.planCode}}</div>', sort: true},
-                        {field: 'changeState', title: '变更状态', sort: true},
-                        {field: 'planTime', title: '时间', templet: '<div>{{d.planEntity.planTime}}</div>', sort: true},
-                        {field: 'planName', title: '计划名称', templet: '<div>{{d.planEntity.planName}}</div>', sort: true},
-                        {
-                            field: 'planObject',
-                            title: '培训对象',
-                            templet: '<div>{{d.planEntity.planObject}}</div>',
-                            sort: true
-                        },
-                        {field: 'planType', title: '培训方式', templet: '<div>{{d.planEntity.planType}}</div>', sort: true},
-                        {field: 'remark', title: '备注', templet: '<div>{{d.planEntity.planCode}}</div>', sort: true},
+                        {checkbox: true, fixed: true}
+                        , {field: 'planCode', title: '计划编码', sort: true,templet:'<div>{{d.planEntity.planCode}}</div>'}
+                        , {field: 'changeState', title: '变更状态', sort: true}
+                        , {field: 'planTime', title: '时间', sort: true,templet:'<div>{{d.planEntity.planTime}}</div>'}
+                        , {field: 'planName', title: '计划名称', sort: true,templet:'<div>{{d.planEntity.planName}}</div>'}
+                        , {field: 'planObject',title: '培训对象', sort: true,templet:'<div>{{d.planEntity.planObject}}</div>'}
+                        , {field: 'planType', title: '培训方式', sort: true,templet:'<div>{{d.planEntity.planType}}</div>'}
+                        , {field: 'remark', title: '备注', sort: true}
                     ]]
                     , page: true   //开启分页
-                    , limit: 5   //默认十条数据一页
+                    , limit: 10  //默认十条数据一页
                     , limits: [10, 20, 30, 50]  //数据分页条
                 });
             },
@@ -187,10 +192,22 @@
                         console.log(JSON.stringify(ret));
                     }
                 });
+            },
+            deleteJH: function (obj) {
+                layer.confirm('你确定删除这条记录吗？', function (index) {
+                    $.post("/deletePlanById/" + obj.id, function (ret) {
+                        xqJH.initJH();
+                        layer.close(index);
+                    })
+                });
             }
         };
         xqJH.initJH();
         xqJH.initBG();
+        $("#addUser").click(function () {
+            var editData = {title: '新增', btn: '保存', data: '', type: 'add'};
+            xqJH.opEditWin(editData);
+        })
     });
 
     function selectType() {
