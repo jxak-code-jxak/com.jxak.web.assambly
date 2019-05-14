@@ -15,6 +15,15 @@ import java.util.List;
 public class DeptService {
     @Autowired
     DeptDao deptDao;
+    /**
+    * @Description:    返回部门组织树形结构
+    * @Author:         liaoyuanjie
+    * @CreateDate:     2019/5/14 17:23
+    * @UpdateUser:     liaoyuanjie
+    * @UpdateDate:     2019/5/14 17:23
+    * @UpdateRemark:   修改内容
+    * @Version:        1.0
+    */
     public List<BaseTreeGrid> getDeptTree() {
         List<BaseTreeGrid> baseTreeGrids = new ArrayList<>();
         List<DeptEntity> deptEntities = deptDao.selectList(new EntityWrapper<>());

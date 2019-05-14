@@ -13,6 +13,15 @@ import java.util.List;
 public class MainService {
     @Autowired
     MenuService menuService;
+    /**
+    * @Description:    查询系统菜单树
+    * @Author:         liaoyuanjie
+    * @CreateDate:     2019/5/14 17:23
+    * @UpdateUser:     liaoyuanjie
+    * @UpdateDate:     2019/5/14 17:23
+    * @UpdateRemark:   修改内容
+    * @Version:        1.0
+    */
     public List<BaseTreeGrid> getMenuTree(){
         List<BaseTreeGrid> baseTreeGrids=new ArrayList<>();        List<Menu> menus = menuService.selectList(new EntityWrapper<>());
         //组装树形结构

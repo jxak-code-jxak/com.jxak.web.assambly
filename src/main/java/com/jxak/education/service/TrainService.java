@@ -25,10 +25,29 @@ public class TrainService extends ServiceImpl<TrainDao,TrainEntity> {
     public List<TrainEntity> getTrainList(){
         return trainDao.getTrainList();
     }
+    /**
+    * @Description:    根据部门编码查询当前部门下的所有人员的培训需求记录
+    * @Author:         liaoyuanjie
+    * @CreateDate:     2019/5/14 17:24
+    * @UpdateUser:     liaoyuanjie
+    * @UpdateDate:     2019/5/14 17:24
+    * @UpdateRemark:   修改内容
+    * @Version:        1.0
+    */
     public List<TrainEntity> getTrainByDept(String deptCode){
         String str =new StringBuilder().append(deptCode).append("%").toString();
         return trainDao.getTrainByDept(str);
     }
+
+    /**
+    * @Description:    保存培训需求
+    * @Author:         liaoyuanjie
+    * @CreateDate:     2019/5/14 17:24
+    * @UpdateUser:     liaoyuanjie
+    * @UpdateDate:     2019/5/14 17:24
+    * @UpdateRemark:   修改内容
+    * @Version:        1.0
+    */
     @Transactional(rollbackFor = Exception.class)
     public boolean saveTrain(TrainEntity trainEntity){
         UserEntity userEntity =trainEntity.getUserEntity();

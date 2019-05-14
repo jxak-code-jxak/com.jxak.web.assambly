@@ -9,6 +9,7 @@ import com.jxak.education.utils.ResponseT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -18,9 +19,14 @@ public class PlanController {
     @Autowired
     ChangeService changeService;
     /**
-     * 培训计划列表
-     * @return
-     */
+    * @Description:    查询培训计划列表
+    * @Author:         liaoyuanjie
+    * @CreateDate:     2019/5/14 17:31
+    * @UpdateUser:     liaoyuanjie
+    * @UpdateDate:     2019/5/14 17:31
+    * @UpdateRemark:   修改内容
+    * @Version:        1.0
+    */
     @GetMapping(value = "/getPlanList")
     public ResponseT<PlanEntity> getPlanListPage(@RequestParam int page, @RequestParam int limit){
         ResponseT<PlanEntity> responseT=new ResponseT<>();
@@ -30,6 +36,15 @@ public class PlanController {
         responseT.setMsg("");
         return responseT;
     }
+    /**
+    * @Description:    查询培训变更记录列表
+    * @Author:         liaoyuanjie
+    * @CreateDate:     2019/5/14 17:27
+    * @UpdateUser:     liaoyuanjie
+    * @UpdateDate:     2019/5/14 17:27
+    * @UpdateRemark:   修改内容
+    * @Version:        1.0
+    */
     @GetMapping(value = "/getChangeList")
     public ResponseT<ChangeEntity> getChangeListPage(@RequestParam int page, @RequestParam int limit){
         ResponseT<ChangeEntity> responseT=new ResponseT<>();
@@ -40,20 +55,33 @@ public class PlanController {
         return responseT;
     }
     /**
-     * 保存培训计划
-     * @param planEntity
-     * @return
-     */
+    * @Description:    保存培训计划
+    * @Author:         liaoyuanjie
+    * @CreateDate:     2019/5/14 17:27
+    * @UpdateUser:     liaoyuanjie
+    * @UpdateDate:     2019/5/14 17:27
+    * @UpdateRemark:   修改内容
+    * @Version:        1.0
+    */
     @PostMapping(value = "/savePlan")
     public Map<String,Object> savePlan(@RequestBody PlanEntity planEntity){
         Map<String,Object> objectMap=new HashMap<>();
         objectMap.put("state",planService.savePlan(planEntity));
         return objectMap;
     }
-    @PostMapping(value = "/deletePlanById/{id}")
-    public Map<String,Object> deletePlanById(@PathVariable String id){
+    /**
+    * @Description:    根据id数组删除培训计划
+    * @Author:         liaoyuanjie
+    * @CreateDate:     2019/5/14 17:27
+    * @UpdateUser:     liaoyuanjie
+    * @UpdateDate:     2019/5/14 17:27
+    * @UpdateRemark:   修改内容
+    * @Version:        1.0
+    */
+    @PostMapping(value = "/deletePlanByIds")
+    public Map<String,Object> deletePlanById(@RequestBody List<String> ids){
         Map<String,Object> objectMap=new HashMap<>();
-        objectMap.put("state",planService.deletePlanById(id));
+        objectMap.put("state",planService.deletePlanByIds(ids));
         return objectMap;
     }
 }

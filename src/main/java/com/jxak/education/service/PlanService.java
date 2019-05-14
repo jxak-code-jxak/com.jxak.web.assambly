@@ -34,8 +34,8 @@ public class PlanService extends ServiceImpl<PlanDao, PlanEntity> {
         this.insertOrUpdate(planEntity);
         return true;
     }
-    public boolean deletePlanById(String id){
-        this.deleteById(id);
+    public boolean deletePlanByIds(List<String> id){
+        this.deleteBatchIds(id);
         return true;
     }
 
