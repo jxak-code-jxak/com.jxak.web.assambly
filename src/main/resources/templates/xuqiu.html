@@ -74,7 +74,7 @@
                 });
             },
             editXQ: function (obj) {
-                var index = layer.open({
+                layer.open({
                     type: 2, //类型，解析url
                     closeBtn: 1, //关闭按钮是否显示 1显示0不显示
                     title: obj.title, //页面标题
@@ -120,7 +120,23 @@
                             }
                         })
                         body.contents().find("#saveUser").click(function () {
-                            xuqiu.saveUser(body, index);
+                            var train = {
+                                id: body.contents().find("#id").val(),
+                                userId: body.contents().find("#userId").val(),
+                                performance: body.contents().find("#performance").attr("data"),
+                                skilled: body.contents().find("#skilled").attr("data"),
+                                train: body.contents().find("#train").attr("data"),
+                                writeTime: body.contents().find("#writeTime").val(),
+                                userEntity:{
+                                    id:body.contents().find("#userId").val(),
+                                    name: body.contents().find("#name").val(),
+                                    sex: body.contents().find(":radio[name='sex']:checked").val(),
+                                    workTime: body.contents().find("#workTime").val(),
+                                    healthy: body.contents().find("#healthy").attr("data"),
+                                    deptCode: body.contents().find("#deptCode").val(),
+                                }
+                            };
+                            xuqiu.saveUser(train, index);
                         });
                     }
                 });
@@ -133,27 +149,11 @@
                     })
                 });
             },
-            saveUser: function (body, index) {
-                var train = {
-                    id: body.contents().find("#id").val(),
-                    userId: body.contents().find("#userId").val(),
-                    performance: body.contents().find("#performance").attr("data"),
-                    skilled: body.contents().find("#skilled").attr("data"),
-                    train: body.contents().find("#train").attr("data"),
-                    writeTime: body.contents().find("#writeTime").val(),
-                    userEntity:{
-                        id:body.contents().find("#userId").val(),
-                        name: body.contents().find("#name").val(),
-                        sex: body.contents().find(":radio[name='sex']:checked").val(),
-                        workTime: body.contents().find("#workTime").val(),
-                        healthy: body.contents().find("#healthy").attr("data"),
-                        deptCode: body.contents().find("#deptCode").val(),
-                    }
-                };
+            saveUser: function (data, index) {
                 $.ajax({
                     url: "/saveTrain",
                     type: "POST",
-                    data: JSON.stringify(train), //转JSON字符串
+                    data: JSON.stringify(data), //转JSON字符串
                     dataType: 'json',
                     contentType: 'application/json;charset=UTF-8', //contentType很重要
                     success: function (ret) {
