@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.jxak.education.dao.PlanDao;
 import com.jxak.education.entity.PlanEntity;
+import com.jxak.education.utils.GuidUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,14 @@ public class PlanService extends ServiceImpl<PlanDao, PlanEntity> {
 
         Page<PlanEntity> page = new Page<>(1, 5);  // 查询第1页，每页返回5条
         return planDao.selectPage(page, new EntityWrapper<>());
+    }
+    @Transactional(rollbackFor = Exception.class)
+    public boolean savePlan(PlanEntity planEntity){
+        if (planEntity.getId().equals("")){
+            planEntity.setId(GuidUtils.getCode());
+        }
+        this.insertOrUpdate(planEntity);
+        return true;
     }
 
 }

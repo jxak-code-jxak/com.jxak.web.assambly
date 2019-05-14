@@ -6,6 +6,8 @@ import com.jxak.education.service.ChangeService;
 import com.jxak.education.service.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -40,6 +42,18 @@ public class PlanController {
         objectMap.put("count",changeEntities.size());
         objectMap.put("code",0);
         objectMap.put("msg","");
+        return objectMap;
+    }
+
+    /**
+     * 保存培训计划
+     * @param planEntity
+     * @return
+     */
+    @PostMapping(value = "/savePlan")
+    public Map<String,Object> savePlan(@RequestBody PlanEntity planEntity){
+        Map<String,Object> objectMap=new HashMap<>();
+        objectMap.put("state",planService.savePlan(planEntity));
         return objectMap;
     }
 }

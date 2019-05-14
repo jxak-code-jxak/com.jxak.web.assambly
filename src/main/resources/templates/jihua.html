@@ -33,10 +33,10 @@
     </div>
 </div>
 <script th:inline="none">
-    layui.use(['element', 'laydate', 'table','form'], function () {
+    layui.use(['element', 'laydate', 'table', 'form'], function () {
         var $ = layui.jquery
             , table = layui.table
-            , form =layui.form
+            , form = layui.form
             , laydate = layui.laydate;
         ; //Tab的切换功能，切换事件监听等，需要依赖element模块
 
@@ -68,38 +68,37 @@
                         layer.msg('ID：' + data.id + ' 的查看操作');
                     } else if (obj.event === 'del') {
                         var deleteData = {id: data.id};
-                        xuqiu.deleteXQ(deleteData);
+                        xqJH.deleteXQ(deleteData);
                     } else if (obj.event === 'edit') {
-                        var editData = {title: '编辑', btn: '保存', data: data};
-                        xuqiu.editXQ(editData);
-                    }else if (obj.event==='add'){
-                        alert(123)
+                        var editData = {title: '编辑', btn: '保存', data: data, type: obj.event};
+                        xqJH.opEditWin(editData);
                     }
                 });
                 //监听表格头部工具
-                table.on('toolbar(jhEdit)',function (obj) {
+                table.on('toolbar(jhEdit)', function (obj) {
                     //新增数据
-                    if (obj.even()==='add'){
-
+                    if (obj.event === 'add') {
+                        var editData = {title: '新增', btn: '保存', data: '', type: obj.event};
+                        xqJH.opEditWin(editData);
                     }
                 })
                 //年选择器
                 laydate.render({
                     elem: '#yearSelect'
-                    ,type: 'year'
+                    , type: 'year'
                 });
 
                 //年月选择器
                 laydate.render({
                     elem: '#monthSelect'
-                    ,type: 'month'
+                    , type: 'month'
                 });
                 //年月日选择器
                 laydate.render({
                     elem: '#dateSelect'
                 });
             },
-            initBG:function () {
+            initBG: function () {
                 table.render({
                     elem: '#pxBG'  //绑定table id
                     , url: '/getChangeList'  //数据请求路径
@@ -107,13 +106,18 @@
                     , cellMinWidth: 80
                     , cols: [[
                         {checkbox: true, fixed: true},
-                        {field: 'planCode', title: '计划编码',templet: '<div>{{d.planEntity.planCode}}</div>', sort: true},
+                        {field: 'planCode', title: '计划编码', templet: '<div>{{d.planEntity.planCode}}</div>', sort: true},
                         {field: 'changeState', title: '变更状态', sort: true},
-                        {field: 'planTime', title: '时间',templet: '<div>{{d.planEntity.planTime}}</div>', sort: true},
-                        {field: 'planName', title: '计划名称', templet: '<div>{{d.planEntity.planName}}</div>',sort: true},
-                        {field: 'planObject', title: '培训对象',templet: '<div>{{d.planEntity.planObject}}</div>', sort: true},
-                        {field: 'planType', title: '培训方式',templet: '<div>{{d.planEntity.planType}}</div>', sort: true},
-                        {field: 'remark', title: '备注',templet: '<div>{{d.planEntity.planCode}}</div>', sort: true},
+                        {field: 'planTime', title: '时间', templet: '<div>{{d.planEntity.planTime}}</div>', sort: true},
+                        {field: 'planName', title: '计划名称', templet: '<div>{{d.planEntity.planName}}</div>', sort: true},
+                        {
+                            field: 'planObject',
+                            title: '培训对象',
+                            templet: '<div>{{d.planEntity.planObject}}</div>',
+                            sort: true
+                        },
+                        {field: 'planType', title: '培训方式', templet: '<div>{{d.planEntity.planType}}</div>', sort: true},
+                        {field: 'remark', title: '备注', templet: '<div>{{d.planEntity.planCode}}</div>', sort: true},
                     ]]
                     , page: true   //开启分页
                     , limit: 5   //默认十条数据一页
@@ -121,17 +125,74 @@
                 });
             },
             /**
-             * 新增培训计划
+             *
+             * @param obj 窗体需要的数据
              */
-            addJH:function () {
-                layui.open({
-
+            opEditWin: function (obj) {
+                layer.open({
+                    type: 2, //类型，解析url
+                    closeBtn: 1, //关闭按钮是否显示 1显示0不显示
+                    title: obj.title, //页面标题
+                    shadeClose: true, //点击遮罩区域是否关闭页面
+                    shade: 0.8,  //遮罩透明度
+                    area: ['100%', '100%'],  //弹出层页面比例
+                    content: '/main/opJiHuaEdit',
+                    success: function (layero, index) {
+                        var body = layer.getChildFrame('body', index);
+                        if (obj.type === 'edit') {
+                            body.contents().find("#id").val(obj.data.id)
+                            body.contents().find("#planCode").val(obj.data.planCode)
+                            body.contents().find("#planName").val(obj.data.planName)
+                            body.contents().find("#planType").val(obj.data.planType)
+                            body.contents().find("#planBeginTime").val(obj.data.planBeginTime)
+                            body.contents().find("#planEndTime").val(obj.data.planEndTime)
+                            body.contents().find("#planContent").val(obj.data.planContent)
+                            body.contents().find("#eduPurpose").val(obj.data.eduPurpose)
+                            body.contents().find("#planObject").val(obj.data.planObject)
+                        }
+                        body.contents().find("#saveJH").click(function () {
+                            var jh = {
+                                id: body.contents().find("#id").val(),
+                                planCode: body.contents().find("#planCode").val(),
+                                planName: body.contents().find("#planName").val(),
+                                planType: body.contents().find("#planType").val(),
+                                planBeginTime: body.contents().find("#planBeginTime").val(),
+                                planEndTime: body.contents().find("#planEndTime").val(),
+                                planContent: body.contents().find("#planContent").val(),
+                                eduPurpose: body.contents().find("#eduPurpose").val(),
+                                planObject: body.contents().find("#planObject").val(),
+                            };
+                            xqJH.saveJH(jh, index);
+                        });
+                    }
+                });
+            },
+            /**
+             *
+             * @param data 保存的数据
+             * @param index 窗体索引
+             */
+            saveJH: function (data, index) {
+                $.ajax({
+                    url: '/savePlan'
+                    , type: 'post'
+                    , data: JSON.stringify(data)
+                    , contentType: 'application/json;charset=UTF-8' //contentType很重要
+                    , dataType: 'json'
+                    , success: function (ret) {
+                        xqJH.initJH();
+                        layer.close(index);
+                    }
+                    , error: function (ret) {
+                        console.log(JSON.stringify(ret));
+                    }
                 });
             }
         };
         xqJH.initJH();
         xqJH.initBG();
     });
+
     function selectType() {
         alert(123)
     }

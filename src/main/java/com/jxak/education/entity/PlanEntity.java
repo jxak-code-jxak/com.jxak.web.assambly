@@ -12,6 +12,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.util.Date;
+
 /**
 * @Description:    安全教育培训计划表
 * @Author:         liaoyuanjie
@@ -40,12 +42,28 @@ public class PlanEntity extends BaseEntity {
     private Timestamp planTime;//计划时间
     @Column(name = "plan_name")
     @TableField("plan_name")
-    private String planName;//计划名称
+    private String planName;//培训名称
     @Column(name = "plan_object")
     @TableField("plan_object")
     private String planObject;//培训对象
+    @Column(name = "plan_content")
+    @TableField("plan_content")
+    private String planContent;//培训内容
     @Column(name = "plan_type")
     @TableField("plan_type")
     private Integer planType;//培训方式
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
+    @Column(name = "plan_begin_time")
+    @TableField("plan_begin_time")
+    private Date planBeginTime;//培训其实日期
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
+    @Column(name = "plan_end_time")
+    @TableField("plan_end_time")
+    private Date planEndTime;//培训结束日期
+    @Column(name = "edu_purpose")
+    @TableField("edu_purpose")
+    private String eduPurpose;//教育目的
     private Integer state;
 }

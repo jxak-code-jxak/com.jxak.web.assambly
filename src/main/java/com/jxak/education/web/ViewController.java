@@ -50,6 +50,15 @@ public class ViewController {
     public String opXuqiuEdit(){
         return "/xuqiuEdit";
     }
+
+    /**
+     * 安全教育培训需求 编辑
+     * @return
+     */
+    @RequestMapping(value = "/userEdit",method = RequestMethod.GET)
+    public String userEdit(){
+        return "/userEdit";
+    }
     /**
      *安全教育培训计划
      * @return
@@ -60,14 +69,13 @@ public class ViewController {
     }
 
     /**
-     * 安全教育培训计划 编辑
+     *安全教育培训计划 编辑
      * @return
      */
-    @RequestMapping(value = "/userEdit",method = RequestMethod.GET)
-    public String userEdit(){
-        return "/userEdit";
+    @RequestMapping(value = "/main/opJiHuaEdit",method = RequestMethod.GET)
+    public String opJiHuaEdit(){
+        return "/jhEdit";
     }
-
     /**
      * 费用台账
      * @return

@@ -10,15 +10,18 @@
 <div class="layui-container layui-form">
     <div class="layui-form-item">
         <div class="layui-inline">
+            <input type="hidden" id="id" value="">
+        </div>
+        <div class="layui-inline">
             <label class="layui-form-label">培训名称</label>
             <div class="layui-input-inline">
-                <input id="name" type="text" lay-verify="required" autocomplete="off" class="layui-input">
+                <input id="planName" type="text" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">培训方式</label>
             <div class="layui-input-inline">
-                <input id="type" type="text" lay-verify="required" autocomplete="off" class="layui-input">
+                <input id="planType" type="text" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -26,13 +29,13 @@
         <div class="layui-inline">
             <label class="layui-form-label">培训起始时间</label>
             <div class="layui-input-inline">
-                <input id="beginDate" type="text" lay-verify="required" autocomplete="off" class="layui-input">
+                <input id="planBeginTime" type="text" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">培训结束时间</label>
             <div class="layui-input-inline">
-                <input id="endDate" type="text" lay-verify="required" autocomplete="off" class="layui-input">
+                <input id="planEndTime" type="text" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -40,13 +43,13 @@
         <div class="layui-inline">
             <label class="layui-form-label">培训内容</label>
             <div class="layui-input-inline">
-                <input id="" type="text" lay-verify="required" autocomplete="off" class="layui-input">
+                <input id="planContent" type="text" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">教育目的</label>
             <div class="layui-input-inline">
-                <input id="" type="text" lay-verify="required" autocomplete="off" class="layui-input">
+                <input id="eduPurpose" type="text" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -54,13 +57,13 @@
         <div class="layui-inline">
             <label class="layui-form-label">培训对象</label>
             <div class="layui-input-inline">
-                <input id="" type="text" lay-verify="required" autocomplete="off" class="layui-input">
+                <input id="planObject" type="text" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
     <div class="layui-form-item">
         <div class="layui-inline" style="width: 350px">
-            <button id="saveUser" type="button" style="margin-left: 40px" class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button id="saveJH" type="button" style="margin-left: 40px" class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
         </div>
         <div class="layui-inline">
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
