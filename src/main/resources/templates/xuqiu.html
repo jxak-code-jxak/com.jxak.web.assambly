@@ -10,6 +10,9 @@
 <div class="layui-fluid">
     <div class="layui-row">
         <div class="layui-col-xs2">
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>组织结构</legend>
+            </fieldset>
             <div style="display: inline-block; width: 180px; padding: 10px;overflow: auto;">
                 <ul id="deptTree"></ul>
             </div>
@@ -167,14 +170,19 @@
             },
             getTreeNodes: function () {
                 $.get("/dept/getDeptTree", function (ret) {
-                    layui.tree({
-                        elem: '#deptTree' //传入元素选择器
-                        , target: '_blank' //是否新选项卡打开（比如节点返回href才有效）
-                        , click: function (item) { //点击节点回调
-                            xuqiu.initTable(item.id);
-                        }
-                        , nodes: ret
-                    });
+                    if (ret.length>0){
+                        layui.tree({
+                            elem: '#deptTree' //传入元素选择器
+                            , target: '_blank' //是否新选项卡打开（比如节点返回href才有效）
+                            , click: function (item) { //点击节点回调
+                                xuqiu.initTable(item.id);
+                            }
+                            , nodes: ret
+                        });
+                    } else {
+                        $("#deptTree").text("无数据");
+                    }
+
                 });
             },
             addXQ: function (obj) {
