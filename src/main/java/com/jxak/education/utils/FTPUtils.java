@@ -1,10 +1,14 @@
 package com.jxak.education.utils;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPConnectionClosedException;
+import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,29 +29,35 @@ public class FTPUtils  {
     private FTPClient ftpClient = new FTPClient();
 	
     /**
-             * 用户名
+     * 用户名
      */
     @Value("${ftp.username}")   
     private String userName;
     
     /**
-             * 密码
+     * 密码
      */
     @Value("${ftp.password}")
     private String passWord;
     
     
     /**
-             *主机
+     *主机
      */
     @Value("${ftp.host}")  
     private String ip;
     
     /**
-             * 端口号
+     * 端口号
      */
     @Value("${ftp.port}")
     private int port;
+    
+    /**
+     * 下载文件保存路径
+     */
+    @Value("${ftp.localpath}")
+    private String localPath;
  
     
     /**
@@ -102,32 +112,53 @@ public class FTPUtils  {
     
     
     /**
-     * @Comment功能：根据文件名称下载文件流
-     * @param filename
-     * @return
-     * @throws IOException
+     * @throws Exception 
+    * @Title：downloadFile 
+    * @Comment：根据文件全路径下载文件到本地
+    * @author：杨廷华
+    * @param ：@param remotePath
+    * @param ：@param response
+    * @param ：@throws IOException 
+    * @return ：void 
+    * @throws
      */
-    public InputStream  downloadFile(String filename)throws IOException {
-        InputStream in=null;
-        try {
-            connectToServer();
-            ftpClient.enterLocalPassiveMode();
-            setFileType(FTP.BINARY_FILE_TYPE);
-            int reply = ftpClient.getReplyCode();   
-            if(!FTPReply.isPositiveCompletion(reply)){   
-                ftpClient.disconnect();
-                throw new IOException(String.format("FTP服务器连接失败，请检查主机地址[%s]是否正确！",ip));   
-            }
-            //ftpClient.changeWorkingDirectory(CURRENT_DIR);
-            in=ftpClient.retrieveFileStream(filename);
-        } catch (FTPConnectionClosedException e) {
-        	log.error("FTP连接被关闭！", e);
-            throw e;
-        } catch (Exception e) {
-            log.error("ERR : upload file "+ filename+ " from ftp : failed!", e);
-        }
-        return in;
+    public boolean  downloadFtpFile(String attrName)throws Exception {
+    	 boolean status = false;  
+    	 connectToServer();
+    	 try {
+	    	 int reply = ftpClient.getReplyCode();    
+	         if (!FTPReply.isPositiveCompletion(reply)) {    
+	        	 ftpClient.disconnect();    
+	             return status;    
+	         }   
+	         ftpClient.changeWorkingDirectory("/");
+	         FTPFile[] fs = ftpClient.listFiles();  
+	         for(FTPFile item:fs){
+	        	 byte[] bytes = item.getName().getBytes("iso-8859-1");
+	             item.setName(new String(bytes,"GBK"));
+	             if(item.getName().equals(attrName)){
+	                File localFile = new File(localPath+item.getName());    
+	                OutputStream is = new FileOutputStream(localFile);     
+	                ftpClient.retrieveFile(item.getName(),is);  
+	                is.close();    
+	             }    
+	         }    
+	         ftpClient.logout();
+	         status = true;    
+    	 }catch (IOException e) {    
+    		 e.printStackTrace();    
+    	 } finally {    
+	         if (ftpClient.isConnected()) {    
+	             try {
+	            	 ftpClient.disconnect();    
+	             } catch (IOException ioe) {
+	            	 ioe.printStackTrace();
+	             	}    
+	         	}    
+    	 	}    
+    	 return status;    
     }
+    
     
     /**
      * @Title：setFileType 

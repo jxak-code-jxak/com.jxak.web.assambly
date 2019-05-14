@@ -6,6 +6,9 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,6 +52,7 @@ public class FilePreviewController {
 	/**
 	 * @Title: docFileConvert
 	 * @Description: 将doc文件转换为pdf文件
+	 * @author 杨廷华
 	 * @param: orginalFilePath
 	 * @param: pdfFilePath
 	 * @param: @return
@@ -74,7 +78,8 @@ public class FilePreviewController {
 
 	/**
 	 * @Title: previewPdfFile
-	 * @Description: 预览PDF文件
+	 * @Comment: 预览PDF文件
+	 * @author 杨廷华
 	 * @param: response
 	 * @return: void
 	 * @throws
@@ -90,7 +95,7 @@ public class FilePreviewController {
             InputStream fis = new FileInputStream(pdfFilePath);
             byte[] buffer = new byte[1024];
             response.reset();
-            response.addHeader("Content-Disposition", "inline;filename="+URLEncoder.encode("测试", "UTF-8"));
+            response.addHeader("Content-Disposition", "inline;filename="+URLEncoder.encode(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()), "UTF-8"));
             response.addHeader("Content-Length", "" + file.length());
             response.setContentType("application/pdf");
             OutputStream toClient = new BufferedOutputStream(response.getOutputStream());

@@ -91,7 +91,7 @@
                        form.attr("style","display:none");
                        form.attr("target","");
                        form.attr("method","post");
-                       form.attr("action","/download/"+ret.data.filename);
+                       form.attr("action","/download?attrName="+ret.data.attrName);
                        $("body").append(form);
                        form.submit();
                    }
