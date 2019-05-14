@@ -1,15 +1,12 @@
 package com.jxak.education.web;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.jxak.education.entity.ChangeEntity;
 import com.jxak.education.entity.PlanEntity;
 import com.jxak.education.service.ChangeService;
 import com.jxak.education.service.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -32,9 +29,9 @@ public class PlanController {
         return objectMap;
     }
     @GetMapping(value = "/getChangeList")
-    public Map<String,Object> getChangeListPage(){
+    public Map<String,Object> getChangeListPage(@RequestParam int page,@RequestParam int limit){
         Map<String,Object> objectMap=new HashMap<>();
-        objectMap.put("data",changeService.getChangeList());
+        objectMap.put("data",changeService.getChangeList(page,limit));
         objectMap.put("count",changeService.selectCount(new EntityWrapper<>()));
         objectMap.put("code",0);
         objectMap.put("msg","");
