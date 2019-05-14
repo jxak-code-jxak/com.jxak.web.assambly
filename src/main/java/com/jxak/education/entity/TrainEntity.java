@@ -26,7 +26,7 @@ import java.sql.Timestamp;
 @TableName("train_info")
 @Table(name = "train_info")
 public class TrainEntity extends BaseEntity{
-   
+
 	private static final long serialVersionUID = 533808743217210799L;
 	@TableField("user_id")
     @Column(name = "user_id")
@@ -39,22 +39,9 @@ public class TrainEntity extends BaseEntity{
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") //入参
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")//出参
     private Timestamp writeTime;//填表时间
+
     /*****************************************/
     @Transient
     @TableField(exist = false)
-    private String name;//姓名
-    @Transient
-    @TableField(exist = false)
-    private String sex;//性别
-    @Transient
-    @TableField(exist = false,value = "work_time")
-    @DateTimeFormat(pattern = "yyyy-MM-dd") //入参
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")//出参
-    private Timestamp workTime;//入职时间
-    @Transient
-    @TableField(exist = false)
-    private Integer healthy;//健康状态
-    @Transient
-    @TableField(exist = false,value = "dept_code")
-    private String deptCode;
+    private UserEntity userEntity;
 }
