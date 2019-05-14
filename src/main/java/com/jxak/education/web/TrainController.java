@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jxak.education.entity.TrainEntity;
 import com.jxak.education.service.TrainService;
 import com.jxak.education.service.UserService;
+import com.jxak.education.utils.ResponseT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
@@ -20,22 +21,22 @@ public class TrainController {
     @Autowired
     UserService userService;
     @GetMapping(value = "/getTrainList")
-    public Map<String,Object> getTrainList(){
-        Map<String,Object> objectMap=new HashMap<>();
-        objectMap.put("data",trainService.getTrainList());
-        objectMap.put("count",trainService.selectCount(new EntityWrapper<>()));
-        objectMap.put("msg","");
-        objectMap.put("code",0);
-        return objectMap;
+    public ResponseT<TrainEntity> getTrainList(){
+        ResponseT<TrainEntity> responseT =new ResponseT<>();
+        responseT.setData(trainService.getTrainList());
+        responseT.setMsg("");
+        responseT.setCode("0");
+        responseT.setCount(trainService.selectCount(new EntityWrapper<>()));
+        return responseT;
     }
     @GetMapping(value = "/getTrainByDept/{deptCode}")
-    public Map<String,Object> getTrainByDept(@PathVariable String deptCode){
-        Map<String,Object> objectMap=new HashMap<>();
-        objectMap.put("data",trainService.getTrainByDept(deptCode));
-        objectMap.put("count",trainService.selectCount(new EntityWrapper<>()));
-        objectMap.put("msg","");
-        objectMap.put("code",0);
-        return objectMap;
+    public ResponseT<TrainEntity> getTrainByDept(@PathVariable String deptCode){
+        ResponseT<TrainEntity> responseT =new ResponseT<>();
+        responseT.setData(trainService.getTrainByDept(deptCode));
+        responseT.setMsg("");
+        responseT.setCount(trainService.selectCount(new EntityWrapper<>()));
+        responseT.setCode("0");
+        return responseT;
     }
     @PostMapping(value = "/deleteTrainById/{id}")
     public Map<String,Object> deleteTrainById(@PathVariable String id){

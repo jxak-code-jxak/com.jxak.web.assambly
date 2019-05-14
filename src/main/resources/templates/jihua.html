@@ -56,7 +56,7 @@
                     , toolbar: '#jhToolBar'
                     , cols: [[
                         {checkbox: true, fixed: 'left'},
-                        {field: 'planCode', title: '计划编码', sort: true},
+                        {field: 'id', title: '计划编码', sort: true},
                         {field: 'planTime', title: '时间', sort: true},
                         {field: 'planName', title: '计划名称', sort: true},
                         {field: 'trainObject', title: '培训对象', sort: true},
@@ -118,10 +118,9 @@
                     , cols: [[
                         {checkbox: true, fixed: 'left'}
                         , {
-                            field: 'planCode',
+                            field: 'planId',
                             title: '计划编码',
-                            sort: true,
-                            templet: '<div>{{d.planEntity.planCode}}</div>'
+                            templet: '<div>{{d.planEntity.id}}</div>'
                         }
                         , {field: 'changeState', title: '变更状态', sort: true}
                         , {field: 'planTime', title: '时间', sort: true, templet: '<div>{{d.planEntity.planTime}}</div>'}
@@ -148,6 +147,9 @@
                     , page: true   //开启分页
                     , limit: 5  //默认十条数据一页
                     , limits: [5, 10, 50]  //数据分页条
+                    , done: function (res,curr,count) {
+                        xqJH.bgTabCross(res);
+                    }
                 });
             },
             /**
@@ -221,6 +223,38 @@
                         layer.close(index);
                     })
                 });
+            },
+            /**
+             * 变更记录表合并单元格
+             */
+            bgTabCross: function (res) {
+                var data = res.data;
+                var mergeIndex = 0;//定位需要添加合并属性的行数
+                var mark = 1; //这里涉及到简单的运算，mark是计算每次需要合并的格子数
+                var columsName = ['planId'];//需要合并的列名称
+                var columsIndex = [1];//需要合并的列索引值
+                for (var k = 0; k < columsName.length; k++) { //这里循环所有要合并的列
+                    var trArr = $("#pxBG").next().find(".layui-table-body>.layui-table").find("tr");//所有行
+                    for (var i = 1; i < res.data.length; i++) { //这里循环表格当前的数据
+                        var tdCurArr = trArr.eq(i).find("td").eq(columsIndex[k]);//获取当前行的当前列
+                        var tdPreArr = trArr.eq(mergeIndex).find("td").eq(columsIndex[k]);//获取相同列的第一列
+
+                        if (data[i][columsName[k]] === data[i - 1][columsName[k]]) { //后一行的值与前一行的值做比较，相同就需要合并
+                            mark += 1;
+                            tdPreArr.each(function () {//相同列的第一列增加rowspan属性
+                                $(this).attr("rowspan", mark);
+                            });
+                            tdCurArr.each(function () {//当前行隐藏
+                                $(this).css("display", "none");
+                            });
+                        } else {
+                            mergeIndex = i;
+                            mark = 1;//一旦前后两行的值不一样了，那么需要合并的格子数mark就需要重新计算
+                        }
+                    }
+                    mergeIndex = 0;
+                    mark = 1;
+                }
             }
         };
         xqJH.initJH();

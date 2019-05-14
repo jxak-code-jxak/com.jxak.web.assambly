@@ -32,9 +32,6 @@ public class PlanEntity extends BaseEntity {
 
 
 	private static final long serialVersionUID = 4778684192314097195L;
-	@Column(name = "plan_code")
-    @TableField("plan_code")
-    private String planCode;//计划编码
     @Column(name = "plan_time")
     @TableField("plan_time")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

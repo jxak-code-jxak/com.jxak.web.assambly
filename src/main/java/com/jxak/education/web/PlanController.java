@@ -1,9 +1,11 @@
 package com.jxak.education.web;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.jxak.education.entity.ChangeEntity;
 import com.jxak.education.entity.PlanEntity;
 import com.jxak.education.service.ChangeService;
 import com.jxak.education.service.PlanService;
+import com.jxak.education.utils.ResponseT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
@@ -20,22 +22,22 @@ public class PlanController {
      * @return
      */
     @GetMapping(value = "/getPlanList")
-    public Map<String,Object> getPlanListPage(@RequestParam int page,@RequestParam int limit){
-        Map<String,Object> objectMap=new HashMap<>();
-        objectMap.put("data",planService.getPlanListPage(page,limit));
-        objectMap.put("count",planService.selectCount(new EntityWrapper<>()));
-        objectMap.put("msg","");
-        objectMap.put("code",0);
-        return objectMap;
+    public ResponseT<PlanEntity> getPlanListPage(@RequestParam int page, @RequestParam int limit){
+        ResponseT<PlanEntity> responseT=new ResponseT<>();
+        responseT.setData(planService.getPlanListPage(page,limit));
+        responseT.setCount(planService.selectCount(new EntityWrapper<>()));
+        responseT.setCode("0");
+        responseT.setMsg("");
+        return responseT;
     }
     @GetMapping(value = "/getChangeList")
-    public Map<String,Object> getChangeListPage(@RequestParam int page,@RequestParam int limit){
-        Map<String,Object> objectMap=new HashMap<>();
-        objectMap.put("data",changeService.getChangeList(page,limit));
-        objectMap.put("count",changeService.selectCount(new EntityWrapper<>()));
-        objectMap.put("code",0);
-        objectMap.put("msg","");
-        return objectMap;
+    public ResponseT<ChangeEntity> getChangeListPage(@RequestParam int page, @RequestParam int limit){
+        ResponseT<ChangeEntity> responseT=new ResponseT<>();
+        responseT.setData(changeService.getChangeList(page,limit));
+        responseT.setCount(changeService.selectCount(new EntityWrapper<>()));
+        responseT.setCode("0");
+        responseT.setMsg("");
+        return responseT;
     }
     /**
      * 保存培训计划

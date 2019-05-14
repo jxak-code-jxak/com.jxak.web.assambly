@@ -6,6 +6,7 @@ import com.jxak.education.entity.Menu;
 import com.jxak.education.service.MainService;
 import com.jxak.education.service.MenuService;
 import com.jxak.education.utils.BaseTreeGrid;
+import com.jxak.education.utils.ResponseT;
 import com.sun.prism.impl.BaseGraphics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,9 +27,11 @@ public class MainController {
      * @return
      */
     @GetMapping(value = "/getMenuTree")
-    public Map<String,Object> getMenuTree(){
-        Map<String,Object> objectMap =new HashMap<>();
-        objectMap.put("data",mainService.getMenuTree());
-        return objectMap;
+    public ResponseT<BaseTreeGrid> getMenuTree(){
+        ResponseT<BaseTreeGrid> response=new ResponseT<>();
+        response.setData(mainService.getMenuTree());
+        response.setMsg("");
+        response.setCode("0");
+        return response;
     }
 }
