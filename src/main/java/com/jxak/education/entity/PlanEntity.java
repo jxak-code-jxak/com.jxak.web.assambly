@@ -61,6 +61,6 @@ public class PlanEntity extends BaseEntity {
     private Date planEndTime;//培训结束日期
     @Column(name = "edu_purpose")
     @TableField("edu_purpose")
-    private String eduPurpose;//教育目的
+    private String eduPurpose;//培训目的
     private Integer state;
 }

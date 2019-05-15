@@ -43,28 +43,49 @@ public class PlanService extends ServiceImpl<PlanDao, PlanEntity> {
      */
     @Transactional(rollbackFor = Exception.class)
     public boolean savePlan(PlanEntity planEntity){
+        boolean isEdit =false;
+        String opId ="";//变更记录
         if (planEntity.getId()==null||planEntity.getId().equals("")){
             planEntity.setId(GuidUtils.getCode());
         }else {
+            //变更前的数据
             PlanEntity entity =this.selectById(planEntity.getId());
             //当前是编辑,需要生成变更记录
             if (entity!=null){
-                ChangeEntity changeEntity =new ChangeEntity();
-                changeEntity.setPlanId(planEntity.getId());
-                changeEntity.setId(GuidUtils.getCode());
-                //将之前的记录更新为变更前
-                changeEntity.setChangeState(EnumState.changeState.before.getState());
-                changeService.update(changeEntity,new EntityWrapper<ChangeEntity>().eq("plan_id",entity.getId()));
-                //生成最新记录为变更后
-                changeEntity.setChangeState(EnumState.changeState.after.getState());
+                isEdit =true;
+                opId =GuidUtils.getCode();
+                ChangeEntity changeEntity=this.setChangeEntity(opId,EnumState.changeState.before.getState(),entity);
                 changeService.insert(changeEntity);
             }
         }
         planEntity.setPlanTime(new Timestamp(new Date().getTime()));
         this.insertOrUpdate(planEntity);
+        if (isEdit){
+            ChangeEntity changeEntity=this.setChangeEntity(opId,EnumState.changeState.after.getState(),planEntity);
+            changeService.insert(changeEntity);
+        }
         return true;
     }
 
+    /**
+     * 维护变更记录
+     * @param opId
+     * @param state
+     * @param entity
+     * @return
+     */
+    private ChangeEntity setChangeEntity(String opId,Integer state,PlanEntity entity){
+        ChangeEntity changeEntity=new ChangeEntity();
+        changeEntity.setId(GuidUtils.getCode());
+        changeEntity.setOpCode(opId);
+        changeEntity.setEduPurpose(entity.getEduPurpose());
+        changeEntity.setPlanContent(entity.getPlanContent());
+        changeEntity.setPlanName(entity.getPlanName());
+        changeEntity.setPlanObject(entity.getPlanObject());
+        changeEntity.setPlanType(entity.getPlanType());
+        changeEntity.setChangeState(state);
+        return changeEntity;
+    }
     /**
      *  删除培训计划
      * @param ids
