@@ -132,27 +132,24 @@
                             title: '计划编码',
                             templet: '<div>{{d.planEntity.id}}</div>'
                         }
-                        , {field: 'changeState', title: '变更状态', sort: true}
-                        , {field: 'planTime', title: '时间', sort: true, templet: '<div>{{d.planEntity.planTime}}</div>'}
+                        , {field: 'changeState', title: '变更状态'}
+                        , {field: 'planTime', title: '时间', templet: '<div>{{d.planEntity.planTime}}</div>'}
                         , {
                             field: 'planName',
                             title: '计划名称',
-                            sort: true,
                             templet: '<div>{{d.planEntity.planName}}</div>'
                         }
                         , {
                             field: 'planObject',
                             title: '培训对象',
-                            sort: true,
                             templet: '<div>{{d.planEntity.planObject}}</div>'
                         }
                         , {
                             field: 'planType',
                             title: '培训方式',
-                            sort: true,
                             templet: '<div>{{d.planEntity.planType}}</div>'
                         }
-                        , {field: 'remark', title: '备注', sort: true}
+                        , {field: 'remark', title: '备注'}
                     ]]
                     , page: true   //开启分页
                     , limit: 5  //默认十条数据一页
@@ -218,7 +215,8 @@
                     , contentType: 'application/json;charset=UTF-8' //contentType很重要
                     , dataType: 'json'
                     , success: function (ret) {
-                        xqJH.initJH();
+                        xqJH.initJH();//刷新计划
+                        xqJH.initBG();//刷新变更记录
                         layer.close(index);
                     }
                     , error: function (ret) {

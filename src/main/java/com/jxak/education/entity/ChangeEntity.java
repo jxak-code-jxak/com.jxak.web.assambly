@@ -30,7 +30,7 @@ public class ChangeEntity extends BaseEntity {
 	private static final long serialVersionUID = 6230059061095965219L;
 	@TableField("plan_id")
 	@Column(name = "plan_id")
-	private Integer planId;//计划id
+	private String planId;//计划id
 	@Column(name = "change_state")
 	@TableField("change_state")
 	private Integer changeState;//状态
