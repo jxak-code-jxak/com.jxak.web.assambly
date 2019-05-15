@@ -24,8 +24,6 @@ import java.sql.Timestamp;
 * @Version:        1.0
 */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper=true)
 @Entity
 @Table(name = "change_info")
