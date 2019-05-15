@@ -3,6 +3,7 @@ package com.jxak.education.service;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jxak.education.entity.Menu;
 import com.jxak.education.utils.BaseTreeGrid;
+import com.jxak.education.utils.TreeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,8 @@ public class MainService {
     * @Version:        1.0
     */
     public List<BaseTreeGrid> getMenuTree(){
-        List<BaseTreeGrid> baseTreeGrids=new ArrayList<>();        List<Menu> menus = menuService.selectList(new EntityWrapper<>());
+        List<BaseTreeGrid> baseTreeGrids=new ArrayList<>();
+        List<Menu> menus = menuService.selectList(new EntityWrapper<>());
         //组装树形结构
         for (int i=0;i<menus.size();i++){
             Menu menu =menus.get(i);
@@ -34,6 +36,6 @@ public class MainService {
             baseTreeGrid.setParentId(menu.getParentCode());
             baseTreeGrids.add(baseTreeGrid);
         }
-        return baseTreeGrids;
+        return TreeUtils.formatTree(baseTreeGrids,false);
     }
 }
