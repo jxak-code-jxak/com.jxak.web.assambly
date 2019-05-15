@@ -62,7 +62,10 @@ public class ChangeEntity extends BaseEntity {
     private String planObject;//培训对象
     @Column(name = "plan_type")
     @TableField("plan_type")
-    private Integer planType;//培训方式
+    private String planType;//培训方式
+    @Column(name = "plan_type_name")
+    @TableField("plan_type_name")
+    private String planTypeName;//培训方式名称
     private String remark;//备注
 	@Column(name = "change_state")
 	@TableField("change_state")

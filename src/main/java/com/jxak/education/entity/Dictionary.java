@@ -20,18 +20,33 @@ import javax.persistence.Table;
 @Entity
 @TableName("data_dictionary")
 @Table(name = "data_dictionary")
-public class DataDictionary extends BaseEntity {
+public class Dictionary extends BaseEntity {
+    /**
+     * 数据项类型编码
+     */
     @TableField("key_type")
     @Column(name = "key_type")
-    private String keyType;//数据项编码
+    private String keyType;
+    /**
+     * 数据类型名称
+     */
     @TableField("key_word")
     @Column(name = "key_word")
-    private String keyWord;//数据类型名称
+    private String keyWord;
+    /**
+     * 数据项编号
+     */
     @TableField("data_code")
     @Column(name = "data_code")
-    private String dataCode;//数据项编号
+    private String dataCode;
+    /**
+     * 数据项值
+     */
     @TableField("data_value")
     @Column(name = "data_value")
-    private String dataValue;//数据项值
-    private String remark;//描述
+    private String dataValue;
+    /**
+     * 描述
+     */
+    private String remark;
 }

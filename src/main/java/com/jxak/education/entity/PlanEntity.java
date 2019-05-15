@@ -43,7 +43,10 @@ public class PlanEntity extends BaseEntity {
     private String planContent;//培训内容
     @Column(name = "plan_type")
     @TableField("plan_type")
-    private Integer planType;//培训方式
+    private String planType;//培训方式
+    @Column(name = "plan_type_name")
+    @TableField("plan_type_name")
+    private String planTypeName;//培训方式名称
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     @Column(name = "plan_begin_time")

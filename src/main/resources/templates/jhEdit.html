@@ -10,7 +10,9 @@
 <div class="layui-container layui-form">
     <div class="layui-form-item">
         <div class="layui-inline">
+            <input type="hidden" id="type" value="">
             <input type="hidden" id="id" value="">
+            <input type="hidden" id="planTypeTemp" value="">
         </div>
     </div>
     <div class="layui-form-item">
@@ -23,7 +25,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">培训方式</label>
             <div class="layui-input-inline">
-                <input id="planType" type="text" lay-verify="required" autocomplete="off" class="layui-input">
+                <select id="planType" lay-filter="planType"></select>
             </div>
         </div>
     </div>
@@ -78,21 +80,6 @@
         </div>
     </div>
 </div>
-<script>
-    layui.use(['element', 'laydate', 'table', 'form'], function () {
-        var $ = layui.jquery
-            , table = layui.table
-            , form = layui.form
-            , laydate = layui.laydate;
-        laydate.render({
-            elem: "#planBeginTime",
-            trigger: 'click'
-        });
-        laydate.render({
-            elem: "#planEndTime",
-            trigger: 'click'
-        });
-    });
-</script>
+<script type="text/javascript" th:src="@{/js/jhEdit.js}" th:inline="none"></script>
 </body>
 </html>
