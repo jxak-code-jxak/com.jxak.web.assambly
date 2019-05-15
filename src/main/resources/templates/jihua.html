@@ -17,10 +17,10 @@
 
             <script type="text/html" id="jhToolBar" lay-filter="jhEdit">
                 <okToolbar>
-                    <button class="layui-btn" id="addUser" lay-event="add">
+                    <button class="layui-btn"  lay-event="add">
                         <i class="iconfont icon-tianjiayonghu1"></i> 添加
                     </button>
-                    <button class="layui-btn layui-btn-danger" id="batchDel">
+                    <button class="layui-btn layui-btn-danger" lay-event="deleteChecked">
                         <i class="iconfont icon-shanchu"></i> 删除选中数据
                     </button>
                 </okToolbar>
@@ -77,8 +77,9 @@
                     if (obj.event === 'detail') {
                         layer.msg('ID：' + data.id + ' 的查看操作');
                     } else if (obj.event === 'del') {
-                        var deleteData = {id: data.id};
-                        xqJH.deleteJH(deleteData);
+                        var ids =[];
+                        ids.push(data.id)
+                        xqJH.deleteJH(ids);
                     } else if (obj.event === 'edit') {
                         var editData = {title: '编辑', btn: '保存', data: data, type: obj.event};
                         xqJH.opEditWin(editData);
@@ -90,6 +91,15 @@
                     if (obj.event === 'add') {
                         var editData = {title: '新增', btn: '保存', data: '', type: 'add'};
                         xqJH.opEditWin(editData);
+                    }
+                    if (obj.event==='deleteChecked'){
+                        var ids =[];
+                        //获取选中行的数据
+                        var data = table.checkStatus(obj.config.id).data;
+                        for (var i=0;i<data.length;i++){
+                            ids.push(data[i].id);
+                        }
+                        xqJH.deleteJH(ids);
                     }
                 })
                 //年选择器
@@ -216,12 +226,26 @@
                     }
                 });
             },
-            deleteJH: function (obj) {
+            deleteJH: function (ids) {
+                if (!ids.length>0){
+                    alert("你未选择任何数据");
+                    return;
+                }
                 layer.confirm('你确定删除这条记录吗？', function (index) {
-                    $.post("/deletePlanById/" + obj.id, function (ret) {
-                        xqJH.initJH();
-                        layer.close(index);
-                    })
+                    $.ajax({
+                        url: '/deletePlanByIds'
+                        , type: 'post'
+                        , data: JSON.stringify(ids)
+                        , contentType: 'application/json;charset=UTF-8' //contentType很重要
+                        , dataType: 'json'
+                        , success: function (ret) {
+                            xqJH.initJH();
+                            layer.close(index);
+                        }
+                        , error: function (ret) {
+                            console.log(JSON.stringify(ret));
+                        }
+                    });
                 });
             },
             /**
