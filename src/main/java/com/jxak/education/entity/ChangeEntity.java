@@ -14,6 +14,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.util.Date;
+
 /**
 * @Description:    变更记录表
 * @Author:         liaoyuanjie
@@ -36,11 +38,16 @@ public class ChangeEntity extends BaseEntity {
 	@TableField("plan_id")
 	@Column(name = "plan_id")
 	private String planId;//计划id
-    @Column(name = "plan_time")
-    @TableField("plan_time")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    private Timestamp planTime;//计划时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
+    @Column(name = "plan_begin_time")
+    @TableField("plan_begin_time")
+    private Date planBeginTime;//培训开始日期
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
+    @Column(name = "plan_end_time")
+    @TableField("plan_end_time")
+    private Date planEndTime;//培训结束日期
     @Column(name = "plan_name")
     @TableField("plan_name")
     private String planName;//培训名称
@@ -56,8 +63,8 @@ public class ChangeEntity extends BaseEntity {
     @Column(name = "plan_type")
     @TableField("plan_type")
     private Integer planType;//培训方式
+    private String remark;//备注
 	@Column(name = "change_state")
 	@TableField("change_state")
 	private Integer changeState;//变更状态
-	private String remark;//备注
 }

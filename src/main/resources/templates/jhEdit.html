@@ -31,13 +31,13 @@
         <div class="layui-inline">
             <label class="layui-form-label">起始时间</label>
             <div class="layui-input-inline">
-                <input id="planBeginTime" type="text" lay-verify="required" autocomplete="off" class="layui-input">
+                <input id="planBeginTime" lay-verify="required" type="text" class="layui-input" placeholder="培训起始时间">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">结束时间</label>
             <div class="layui-input-inline">
-                <input id="planEndTime" type="text" lay-verify="required" autocomplete="off" class="layui-input">
+                <input id="planEndTime" type="text" lay-verify="required" autocomplete="off" class="layui-input" placeholder="培训结束时间">
             </div>
         </div>
     </div>
@@ -49,7 +49,7 @@
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">教育目的</label>
+            <label class="layui-form-label">培训目的</label>
             <div class="layui-input-inline">
                 <input id="eduPurpose" type="text" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
@@ -60,6 +60,12 @@
             <label class="layui-form-label">培训对象</label>
             <div class="layui-input-inline">
                 <input id="planObject" type="text" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-inline">
+                <input id="" type="text" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -73,7 +79,20 @@
     </div>
 </div>
 <script>
-
+    layui.use(['element', 'laydate', 'table', 'form'], function () {
+        var $ = layui.jquery
+            , table = layui.table
+            , form = layui.form
+            , laydate = layui.laydate;
+        laydate.render({
+            elem: "#planBeginTime",
+            trigger: 'click'
+        });
+        laydate.render({
+            elem: "#planEndTime",
+            trigger: 'click'
+        });
+    });
 </script>
 </body>
 </html>

@@ -32,11 +32,6 @@ public class PlanEntity extends BaseEntity {
 
 
 	private static final long serialVersionUID = 4778684192314097195L;
-    @Column(name = "plan_time")
-    @TableField("plan_time")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    private Timestamp planTime;//计划时间
     @Column(name = "plan_name")
     @TableField("plan_name")
     private String planName;//培训名称
@@ -53,7 +48,7 @@ public class PlanEntity extends BaseEntity {
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     @Column(name = "plan_begin_time")
     @TableField("plan_begin_time")
-    private Date planBeginTime;//培训其实日期
+    private Date planBeginTime;//培训开始日期
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     @Column(name = "plan_end_time")
@@ -62,5 +57,6 @@ public class PlanEntity extends BaseEntity {
     @Column(name = "edu_purpose")
     @TableField("edu_purpose")
     private String eduPurpose;//培训目的
+    private String remark;//备注
     private Integer state;
 }

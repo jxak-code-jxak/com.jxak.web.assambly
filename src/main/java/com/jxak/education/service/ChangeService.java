@@ -1,5 +1,6 @@
 package com.jxak.education.service;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.jxak.education.dao.ChangeDao;
@@ -25,9 +26,8 @@ public class ChangeService extends ServiceImpl<ChangeDao, ChangeEntity> {
     * @Version:        1.0
     */
     public List<ChangeEntity> getChangeList(int page,int limit){
-        //Page<ChangeEntity> changeEntityPage=new Page<>(page,limit);
-
-        return changeDao.getChangeList();
+        Page<ChangeEntity> changeEntityList =this.selectPage(new Page<>(page,limit),new EntityWrapper<>());
+        return changeEntityList.getRecords();
     }
     /**
     * @Description:    删除培训变更记录
