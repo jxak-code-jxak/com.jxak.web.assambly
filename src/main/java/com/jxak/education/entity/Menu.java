@@ -9,6 +9,12 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+/** @Author liaoyuanjie
+ * @Description 系统菜单
+ * @Date 15:34 2019/5/15
+ * @Param
+ * @return
+ **/
 @Data
 @EqualsAndHashCode(callSuper=true)
 @Entity
