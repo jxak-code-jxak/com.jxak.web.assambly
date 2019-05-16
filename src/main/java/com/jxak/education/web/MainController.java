@@ -1,26 +1,17 @@
 package com.jxak.education.web;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.jxak.education.entity.DeptEntity;
-import com.jxak.education.entity.Menu;
-import com.jxak.education.service.MainService;
+
 import com.jxak.education.service.MenuService;
 import com.jxak.education.utils.BaseTreeGrid;
 import com.jxak.education.utils.ResponseT;
-import com.sun.prism.impl.BaseGraphics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 @RestController
 public class MainController {
     @Autowired
-    MainService mainService;
+    MenuService menuService;
 
     /**
      * 获取左侧菜单树
@@ -29,7 +20,7 @@ public class MainController {
     @GetMapping(value = "/getMenuTree")
     public ResponseT<BaseTreeGrid> getMenuTree(){
         ResponseT<BaseTreeGrid> response=new ResponseT<>();
-        response.setData(mainService.getMenuTree());
+        response.setData(menuService.getMenuTree());
         response.setMsg("");
         response.setCode("0");
         return response;
