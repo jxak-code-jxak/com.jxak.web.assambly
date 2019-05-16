@@ -82,7 +82,7 @@ public class PlanService extends ServiceImpl<PlanDao, PlanEntity> {
         changeEntity.setPlanContent(entity.getPlanContent());
         changeEntity.setPlanName(entity.getPlanName());
         changeEntity.setPlanObject(entity.getPlanObject());
-        changeEntity.setPlanType(entity.getPlanType());
+        changeEntity.setPlanTypeName(entity.getPlanTypeName());
         changeEntity.setPlanBeginTime(entity.getPlanBeginTime());
         changeEntity.setPlanEndTime(entity.getPlanEndTime());
         changeEntity.setRemark(entity.getRemark());
@@ -98,5 +98,4 @@ public class PlanService extends ServiceImpl<PlanDao, PlanEntity> {
         this.deleteBatchIds(ids);
         return true;
     }
-
 }

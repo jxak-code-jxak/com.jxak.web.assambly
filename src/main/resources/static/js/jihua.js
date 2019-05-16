@@ -19,7 +19,7 @@ layui.use(['element', 'laydate', 'table', 'form'], function () {
                     {field: 'planEndTime', title: '结束时间', sort: true},
                     {field: 'planName', title: '计划名称', sort: true},
                     {field: 'planObject', title: '培训对象', sort: true},
-                    {field: 'planType', title: '培训方式', sort: true},
+                    {field: 'planTypeName', title: '培训方式', sort: true},
                     {field: 'state', title: '状态', sort: true},
                     {title: '操作', width: 178, toolbar: '#jhBar', fixed: 'right', align: "center"}
                 ]]
@@ -91,7 +91,7 @@ layui.use(['element', 'laydate', 'table', 'form'], function () {
                     {field: 'planEndTime', title: '结束时间'},
                     {field: 'planName',title: '计划名称'},
                     {field: 'planObject',title: '培训对象'},
-                    {field: 'planType',title: '培训方式'},
+                    {field: 'planTypeName',title: '培训方式'},
                     {field: 'remark', title: '备注'}
                 ]]
                 , page: true   //开启分页
