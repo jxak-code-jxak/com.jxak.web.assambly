@@ -1,6 +1,8 @@
 package com.jxak.education.utils;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 /**
@@ -13,9 +15,12 @@ import java.util.List;
 * @Version:        1.0
 */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ResponseT<T> {
-    private String code;
-    private List<T> data;
-    private String msg;
-    private Integer count;
+    private String code;//返回状态编码
+    private List<T> data;//返回数据
+    private String msg;//返回消息
+    private Integer count;//返回数据条数
+    private boolean state;//返回状态
 }

@@ -1,6 +1,6 @@
 package com.jxak.education.web;
 
-import com.jxak.education.entity.DeptEntity;
+
 import com.jxak.education.entity.UserEntity;
 import com.jxak.education.service.UserService;
 import com.jxak.education.utils.ResponseT;
@@ -8,15 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-
-import javax.xml.ws.Response;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
 @RestController
 public class UserController {
     @Autowired
