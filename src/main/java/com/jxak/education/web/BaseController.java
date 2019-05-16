@@ -22,8 +22,7 @@ public class BaseController {
 
     @ExceptionHandler(value = Exception.class)
     public Object exceptionGet(Exception e, HttpServletRequest request, HttpServletResponse response) {
-        //自定义的异常类
-        MyException MyException = null;
+
         //返回前端的数据格式
         ResponseT<?> result = null;
         //是否为自定义异常
