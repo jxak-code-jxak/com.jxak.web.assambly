@@ -15,13 +15,29 @@
     </style>
 </head>
 <body>
-<div class="layui-tab layui-tab-card">
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
     <ul class="layui-tab-title">
         <li class="layui-this">企业员工判断图片</li>
-        <li>企业管控图片判断情况</li>
+        <li class="">企业管控图片判断情况</li>
     </ul>
-    <div class="layui-tab-content">
+    <div class="layui-tab-content" style="height: 100px;">
         <div class="layui-tab-item layui-show">
+            <script type="text/html" id="enterpriseUploadFile" lay-filter="enterpriseExamFilter">
+                <img src="{{ d.uploadFile }}" lay-event="preView">
+            </script>
+            <script type="text/html" id="enterpriseToolBar" lay-filter="enterpriseExamFilter">
+                <okToolbar>
+                    <button class="layui-btn" lay-event="add">
+                        <i class="iconfont icon-tianjiayonghu1"></i>时间段筛选
+                    </button>
+                    <button class="layui-btn layui-btn-danger" lay-event="deleteChecked">
+                        <i class="iconfont icon-shanchu"></i>判断结果筛选
+                    </button>
+                </okToolbar>
+            </script>
+            <table id="enterpriseExamTab" lay-filter="enterpriseExamFilter" class="layui-table"></table>
+        </div>
+        <div class="layui-tab-item">
             <script type="text/html" id="empUploadFile" lay-filter="empExamFilter">
                 <img src="{{ d.uploadFile }}" lay-event="preView">
             </script>
@@ -37,21 +53,48 @@
             </script>
             <table id="empExamTab" lay-filter="empExamFilter" class="layui-table"></table>
         </div>
-        <div class="layui-tab-item">
-            <script type="text/html" id="enterpriseToolBar" lay-filter="jhEdit">
-                <okToolbar>
-                    <button class="layui-btn" lay-event="add">
-                        <i class="iconfont icon-tianjiayonghu1"></i>时间段筛选
-                    </button>
-                    <button class="layui-btn layui-btn-danger" lay-event="deleteChecked">
-                        <i class="iconfont icon-shanchu"></i>判断结果筛选
-                    </button>
-                </okToolbar>
-            </script>
-            <table id="enterpriseExamTab" lay-filter="jhEdit" class="layui-table"></table>
-        </div>
     </div>
 </div>
+<!--<div class="layui-tab layui-tab-card">-->
+<!--    <ul class="layui-tab-title">-->
+<!--        <li class="layui-this"></li>-->
+<!--        <li></li>-->
+<!--    </ul>-->
+<!--    <div class="layui-tab-content">-->
+<!--        <div class="layui-tab-item layui-show">-->
+<!--            <script type="text/html" id="enterpriseUploadFile" lay-filter="enterpriseExamFilter">-->
+<!--                <img src="{{ d.uploadFile }}" lay-event="preView">-->
+<!--            </script>-->
+<!--            <script type="text/html" id="enterpriseToolBar" lay-filter="enterpriseExamFilter">-->
+<!--                <okToolbar>-->
+<!--                    <button class="layui-btn" lay-event="add">-->
+<!--                        <i class="iconfont icon-tianjiayonghu1"></i>时间段筛选-->
+<!--                    </button>-->
+<!--                    <button class="layui-btn layui-btn-danger" lay-event="deleteChecked">-->
+<!--                        <i class="iconfont icon-shanchu"></i>判断结果筛选-->
+<!--                    </button>-->
+<!--                </okToolbar>-->
+<!--            </script>-->
+<!--            <table id="enterpriseExamTab" lay-filter="enterpriseExamFilter" class="layui-table"></table>-->
+<!--        </div>-->
+<!--        <div class="layui-tab-item">-->
+<!--            <script type="text/html" id="empUploadFile" lay-filter="empExamFilter">-->
+<!--                <img src="{{ d.uploadFile }}" lay-event="preView">-->
+<!--            </script>-->
+<!--            <script type="text/html" id="jhToolBar" lay-filter="jhEdit">-->
+<!--                <okToolbar>-->
+<!--                    <button class="layui-btn" lay-event="add">-->
+<!--                        <i class="iconfont icon-tianjiayonghu1"></i>时间段筛选-->
+<!--                    </button>-->
+<!--                    <button class="layui-btn layui-btn-danger" lay-event="deleteChecked">-->
+<!--                        <i class="iconfont icon-shanchu"></i>判断结果筛选-->
+<!--                    </button>-->
+<!--                </okToolbar>-->
+<!--            </script>-->
+<!--            <table id="empExamTab" lay-filter="empExamFilter" class="layui-table"></table>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 <script th:src="@{/plugins/layui/layui.js}"></script>
 <script th:inline="none">
     layui.use(['element', 'laydate', 'table', 'form'], function () {
@@ -94,8 +137,7 @@
                     , height: 'full-150'
                     , toolbar: '#enterpriseToolBar'
                     , cols: [[
-                        {checkbox: true, fixed: 'left'},
-                        {field: 'uploadFile', title: '上传图片'},
+                        {field: 'uploadFile', title: '上传图片',templet:'#enterpriseUploadFile'},
                         {field: 'uploadTime', title: '上传时间', sort: true},
                         {field: 'uploadUser', title: '上传人', sort: true},
                         {field: 'examUser', title: '复核人', sort: true},
@@ -108,6 +150,10 @@
 
                     }
                 });
+                //预览图片
+                table.on('tool(enterpriseExamFilter)', function (obj) {
+                    jjwl.preViewEmpFile(obj.data.uploadFile);
+                })
             },
             preViewEmpFile:function (imgFile) {
                 var img = "<img src='" + imgFile + "'  />";

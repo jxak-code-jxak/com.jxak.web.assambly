@@ -194,8 +194,10 @@
             var headerH =$(".layui-header").height();
             var tabTitle =$(".layui-tab-title").height();
             var navBottom=$(".layui-footer").height();
+            var hh =h-headerH-tabTitle-navBottom-4;
+            console.log(hh);
             //alert(headerH)
-            $("iframe").css("height",(h-headerH-tabTitle-navBottom-4)+"px");
+            $("iframe").css("height",hh+"px");
         }
 
         $(window).resize(function () {
