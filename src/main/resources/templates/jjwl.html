@@ -4,15 +4,27 @@
     <meta charset="UTF-8">
     <title>积卷网络</title>
     <link rel="stylesheet" th:href="@{/plugins/layui/css/layui.css}">
+    <style>
+        .layui-table-cell{
+            height: auto;
+            line-height: 28px;
+            padding: 0 15px;
+            position: relative;
+            box-sizing: border-box;
+        }
+    </style>
 </head>
 <body>
 <div class="layui-tab layui-tab-card">
     <ul class="layui-tab-title">
         <li class="layui-this">企业员工判断图片</li>
-        <li>安企业管控图片判断情况</li>
+        <li>企业管控图片判断情况</li>
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
+            <script type="text/html" id="empUploadFile" lay-filter="empExamFilter">
+                <img src="{{ d.uploadFile }}" lay-event="preView">
+            </script>
             <script type="text/html" id="jhToolBar" lay-filter="jhEdit">
                 <okToolbar>
                     <button class="layui-btn" lay-event="add">
@@ -23,7 +35,7 @@
                     </button>
                 </okToolbar>
             </script>
-            <table id="empExamTab" lay-filter="jhEdit" class="layui-table"></table>
+            <table id="empExamTab" lay-filter="empExamFilter" class="layui-table"></table>
         </div>
         <div class="layui-tab-item">
             <script type="text/html" id="enterpriseToolBar" lay-filter="jhEdit">
@@ -56,8 +68,7 @@
                     , height: 'full-150'
                     , toolbar: '#jhToolBar'
                     , cols: [[
-                        {checkbox: true, fixed: 'left'},
-                        {field: 'uploadFile', title: '上传图片'},
+                        {field: 'uploadFile', title: '上传图片',templet:'#empUploadFile'},
                         {field: 'uploadUser', title: '判断人姓名', sort: true},
                         {field: 'examTime', title: '判断时间', sort: true},
                         {field: 'judgeResult', title: '判断结果', sort: true},
@@ -70,6 +81,10 @@
 
                     }
                 });
+                //预览图片
+                table.on('tool(empExamFilter)', function (obj) {
+                    jjwl.preViewEmpFile(obj.data.uploadFile);
+                })
             },
             initEnterpriseExam:function () {
                 table.render({
@@ -93,6 +108,54 @@
 
                     }
                 });
+            },
+            preViewEmpFile:function (imgFile) {
+                var img = "<img src='" + imgFile + "'  />";
+                var setting = {
+                    type: 1,
+                    title: false,
+                    closeBtn: 0,
+                    skin: 'layui-layer-nobg', //没有背景色
+                    shadeClose: true,
+                    shade: 0.6, //遮罩透明度
+                    content: img
+                }
+                var windowH = $(window).height();
+                var windowW = $(window).width();
+                jjwl.getImageWidth(imgFile,function(w,h){
+                    //console.log("win:"+windowH+","+windowW);
+                    //console.log("img:"+h+","+w);
+                    // 调整图片大小
+                    if(w>windowW || h>windowH){
+                        if(w>windowW && h>windowH){
+                            w = thisimg .width()*3;
+                            h = thisimg .height()*3;
+                            setting.area = [w+"px",h+"px"];
+                        }else if(w>windowW){
+                            setting.area = [windowW+"px",windowW*0.5/w*h+"px"];
+                        }else{
+                            setting.area = [w+"px",windowH+"px"];
+                        }
+                    }else{
+                        setting.area = [w+"px",h+"px"];
+                    }
+                    // 设置layer
+                    layer.open(setting);
+                });
+            },
+            getImageWidth(url,callback){
+                var img = new Image();
+                img.src = url;
+
+                // 如果图片被缓存，则直接返回缓存数据
+                if(img.complete){
+                    callback(img.width, img.height);
+                }else{
+                    // 完全加载完毕的事件
+                    img.onload = function(){
+                        callback(img.width, img.height);
+                    }
+                }
             }
         };
         jjwl.initEmpExam();

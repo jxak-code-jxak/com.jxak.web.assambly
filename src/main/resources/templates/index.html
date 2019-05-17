@@ -10,6 +10,10 @@
         .layui-tab-content{
             padding: 0px;
         }
+        .layui-tab{
+            margin: 0px 0;
+            text-align: left !important;
+        }
     </style>
 </head>
 <body class="layui-layout-body">
@@ -164,7 +168,6 @@
                 return false;
             });
         }
-
         $(".rightmenu li").click(function () {
 
             //右键菜单中的选项被点击之后，判断type的类型，决定关闭所有还是关闭当前。
@@ -180,18 +183,24 @@
                 //如果关闭所有 ，即将所有的lay-id放进数组，执行tabDeleteAll
                 main.tabDeleteAll(ids);
             }
-
             $('.rightmenu').hide(); //最后再隐藏右键菜单
         })
+        /**
+         * 计算打开frame的高度
+         * @constructor
+         */
         function FrameWH() {
-            var h = $(window).height() -41- 10 - 60 -10-44 -10;
-            $("iframe").css("height",h+"px");
+            var h = $(window).height();
+            var headerH =$(".layui-header").height();
+            var tabTitle =$(".layui-tab-title").height();
+            var navBottom=$(".layui-footer").height();
+            //alert(headerH)
+            $("iframe").css("height",(h-headerH-tabTitle-navBottom-4)+"px");
         }
 
         $(window).resize(function () {
             FrameWH();
         })
-
     });
 </script>
 </body>
