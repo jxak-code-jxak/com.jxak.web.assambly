@@ -18,8 +18,8 @@ public class DictionaryController {
     @Autowired
     DictionaryService dictionaryService;
     @GetMapping(value = "/getDictionaryKeyType/{keyType}")
-    public ResponseT<Dictionary>  getDictionaryKeyType(@PathVariable String keyType){
-        ResponseT<Dictionary> responseT=new ResponseT<>();
+    public ResponseT getDictionaryKeyType(@PathVariable String keyType){
+        ResponseT responseT=new ResponseT<>();
         responseT.setData(dictionaryService.getDictionaryKeyType(keyType));
         return responseT;
     }

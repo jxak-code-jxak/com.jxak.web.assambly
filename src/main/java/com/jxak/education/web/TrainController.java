@@ -21,8 +21,8 @@ public class TrainController {
     @Autowired
     UserService userService;
     @GetMapping(value = "/getTrainList")
-    public ResponseT<TrainEntity> getTrainList(){
-        ResponseT<TrainEntity> responseT =new ResponseT<>();
+    public ResponseT getTrainList(){
+        ResponseT responseT =new ResponseT<>();
         responseT.setData(trainService.getTrainList());
         responseT.setMsg("");
         responseT.setCode("0");
@@ -30,8 +30,8 @@ public class TrainController {
         return responseT;
     }
     @GetMapping(value = "/getTrainByDept/{deptCode}")
-    public ResponseT<TrainEntity> getTrainByDept(@PathVariable String deptCode){
-        ResponseT<TrainEntity> responseT =new ResponseT<>();
+    public ResponseT getTrainByDept(@PathVariable String deptCode){
+        ResponseT responseT =new ResponseT<>();
         responseT.setData(trainService.getTrainByDept(deptCode));
         responseT.setMsg("");
         responseT.setCount(trainService.selectCount(new EntityWrapper<>()));

@@ -18,8 +18,8 @@ public class MainController {
      * @return
      */
     @GetMapping(value = "/getMenuTree")
-    public ResponseT<BaseTreeGrid> getMenuTree(){
-        ResponseT<BaseTreeGrid> response=new ResponseT<>();
+    public ResponseT getMenuTree(){
+        ResponseT response=new ResponseT<>();
         response.setData(menuService.getMenuTree());
         response.setMsg("");
         response.setCode("0");
