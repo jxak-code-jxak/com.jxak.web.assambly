@@ -24,7 +24,7 @@ import javax.persistence.*;
 @Table(name = "dept_info")
 public class DeptEntity extends BaseEntity{
     
-	private static final long serialVersionUID = -3320744791572178697L;
+	private static final long serialVersionUID = 4440744791452178697L;
 	private String code;
     private String name;
     @TableField("parent_code")

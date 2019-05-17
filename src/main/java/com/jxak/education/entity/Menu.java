@@ -21,6 +21,7 @@ import javax.persistence.Table;
 @TableName("menu")
 @Table(name = "menu")
 public class Menu extends BaseEntity {
+    private static final long serialVersionUID = 623005906109445219L;
     private String name;
     @TableField("parent_code")
     @Column(name = "parent_code")

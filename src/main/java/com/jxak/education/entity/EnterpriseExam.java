@@ -23,6 +23,7 @@ import java.sql.Timestamp;
 @Table(name = "enterprise_exam")
 @TableName("enterprise_exam")
 public class EnterpriseExam extends BaseEntity {
+    private static final long serialVersionUID = 6230059061095965219L;
     @Column(name = "upload_file")
     @TableField("upload_file")
     private String uploadFile;//上传文件

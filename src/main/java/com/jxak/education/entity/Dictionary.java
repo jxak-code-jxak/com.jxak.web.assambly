@@ -21,6 +21,7 @@ import javax.persistence.Table;
 @TableName("data_dictionary")
 @Table(name = "data_dictionary")
 public class Dictionary extends BaseEntity {
+    private static final long serialVersionUID = 6230059061855265219L;
     /**
      * 数据项类型编码
      */
