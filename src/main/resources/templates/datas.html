@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>应急救援、双控、消防、三级教育 教育教材</title>
+<script type="text/javascript" th:src="@{/css/zTreeJs/jquery-1.4.4.min.js}"></script>
+<body>
+	<div class="layui-form">
+		<table id="dataTab" lay-filter="dataTabs" class="layui-hide"></table>
+		<div style="text-align: right;" id="pageplugins"></div>
+	</div>
+	<!-- 隐藏域用于传递教材类型编号 -->
+	<input id="terId" type="hidden" th:value="${terId}"/>
+<script type="text/javascript" th:inline="none">
+//数据表格分页查询
+layui.use('table', function(){
+  var table = layui.table;
+  var id = $("#terId").val();
+  table.render({
+    elem: "#dataTab"
+    ,url:"/loadQuestionByPage?id="+id 
+    ,cols: [[
+    	 {checkbox: true, fixed: true},
+         {field: "traContent", title: "培训内容", sort: true},
+         {field: "question", title: "题目", sort: true},
+         {field: "optionA", title: "选项A", sort: true},
+         {field: "optionB", title: "选项B", sort: true},
+         {field: "optionC", title: "选项C", sort: true},
+         {field: "optionD", title: "选项D", sort: true},
+         {field: "answer", title: "答案", sort: true},
+         {field: "createTime", title: "创建时间", sort: true}
+    ]]
+    ,page: true
+    ,limit: 5
+  });
+});
+</script>
+</body>
+</html>

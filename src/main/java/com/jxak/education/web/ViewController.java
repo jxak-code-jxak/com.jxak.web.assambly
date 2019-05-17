@@ -1,8 +1,10 @@
 package com.jxak.education.web;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ViewController {
@@ -76,6 +78,25 @@ public class ViewController {
     public String opJiHuaEdit(){
         return "/jhEdit";
     }
+
+    /**
+     *培训教材
+     * @return
+     */
+    @RequestMapping(value = "/emerg",method = RequestMethod.GET)
+    public String emergConfig(){
+        return "/emerg";
+    }
+
+    /**
+     *数据展示
+     */
+    @RequestMapping(value = "/datas",method = RequestMethod.GET)
+    public String emergData(Model model, @RequestParam("terId") String terId){
+        model.addAttribute("terId", terId);
+        return "/datas";
+    }
+
     /**
      * 费用台账
      * @return

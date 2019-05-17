@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>应急救援、双控、消防、三级教育 教育教材</title>
+<link rel="stylesheet" th:href="@{/plugins/layui/css/layui.css}"/>
+<link rel="stylesheet" th:href="@{/css/zTreeCss/zTreeStyle.css}" type="text/css"/>
+<script type="text/javascript" th:src="@{/css/zTreeJs/jquery-1.4.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/css/zTreeJs/jquery.ztree.core.js}"></script>
+<script th:src="@{/plugins/layui/layui.js}"></script>
+<script th:src="@{/plugins/layui/lay/modules/upload.js}"></script>
+<SCRIPT type="text/javascript">
+var setting = {
+	data: {
+		simpleData: {
+			enable: true
+		}
+	},
+	callback: {
+		onClick: onClick 
+	}
+};
+//页面切换
+function onClick(event, treeId, treeNode, clickFlag) {
+	$("#log").load('/datas?terId='+treeNode.id);
+}		
+//加载树结构
+$(document).ready(function(){
+	var zNodes;
+	$.ajax({
+	  	url: "/loadTeaMatType",
+        type: "POST",
+        dataType: "JSON",
+        contentType: 'application/json;charset=UTF-8',
+        async:false,
+        success: function(data){
+        	zNodes=JSON.parse(data);
+        },error:function(){
+        	alert("Ajax调用错误！");
+        }
+  	});
+	$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+});
+//下载EXCEL模板文件
+$(function(){
+	$("#downloadExcelTemp").click(function(){
+		window.location.href="/downloadExcel";
+	});
+});
+//题库导入
+layui.use('upload', function () {
+       var $ = layui.jquery,upload = layui.upload;
+       upload.render({
+           elem: '#excelUpload'
+           , url: '/loadExcel'
+           , accept: 'file'
+           , auto: true
+           , done: function (res) {
+           	
+           }
+       	, error:function (res) {
+               
+           }
+	   });
+});
+</SCRIPT>
+<body>
+	<div class="content_wrap">
+	<div style="border:1px solid #ccc;display:inline-block;height:1100px;width:300px;float:left;">
+		<button class="layui-btn layui-btn-sm" id="fileUploads"><i class="layui-icon">&#xe608;</i>新增类型</button>
+    	<button class="layui-btn layui-btn-sm" id="downloadFile"><i class="layui-icon">&#xe642;</i>编辑类型</button>
+    	<button class="layui-btn layui-btn-sm" id="downloadFile"><i class="layui-icon">&#xe640;</i>勾选删除</button>
+		<ul id="treeDemo" class="ztree"></ul>
+	</div>
+	<div style="display:inline-block;height:32px;width:86%;background-color:#F5F5F5;line-height:32px">
+	    <button class="layui-btn layui-btn-sm" id="downloadFile" style="float:right"><i class="layui-icon">&#xe601;</i>题目导出</button>
+	    <button class="layui-btn layui-btn-sm" id="excelUpload" style="float:right"><i class="layui-icon">&#xe608;</i>题目导入</button>
+	    <button class="layui-btn layui-btn-sm" id="downloadExcelTemp" style="float:right;"><i class="layui-icon">&#xe601;</i>下载EXCEL文件</button>
+	</div>
+	<div id="log" style="border:1px solid #ccc;display:inline-block;height:1068px;width:86%;float:right;">
+	</div>
+	<div style="clear: both;"></div>
+</div>
+</body>
+</html>
