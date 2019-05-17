@@ -13,7 +13,17 @@
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
-            123
+            <script type="text/html" id="jhToolBar" lay-filter="jhEdit">
+                <okToolbar>
+                    <button class="layui-btn" lay-event="add">
+                        <i class="iconfont icon-tianjiayonghu1"></i>时间段筛选
+                    </button>
+                    <button class="layui-btn layui-btn-danger" lay-event="deleteChecked">
+                        <i class="iconfont icon-shanchu"></i>判断结果筛选
+                    </button>
+                </okToolbar>
+            </script>
+            <table id="empExamTab" lay-filter="jhEdit" class="layui-table"></table>
         </div>
         <div class="layui-tab-item">
            123
@@ -27,6 +37,53 @@
             , table = layui.table
             , form = layui.form
             , laydate = layui.laydate;
+        var jjwl ={
+            initEmpExam:function () {
+                table.render({
+                    elem: '#empExamTab'  //绑定table id
+                    , url: '/getEmpExamPage'  //数据请求路径
+                    , cellMinWidth: 80
+                    , height: 'full-150'
+                    , toolbar: '#jhToolBar'
+                    , cols: [[
+                        {checkbox: true, fixed: 'left'},
+                        {field: 'uploadUser', title: '判断人姓名', sort: true},
+                        {field: 'examTime', title: '判断时间', sort: true},
+                        {field: 'judgeResult', title: '判断结果', sort: true},
+                        {field: 'comprehensiveResult', title: '综合判断结果', sort: true}
+                    ]]
+                    , page: true   //开启分页
+                    , limit: 10   //默认十条数据一页
+                    , limits: [10, 20, 50, 100]  //数据分页条
+                    , done: function (res) {
+
+                    }
+                });
+            },
+            initEnterpriseExam:function () {
+                table.render({
+                    elem: '#empExamTab'  //绑定table id
+                    , url: '/getEnterpriseExamPage'  //数据请求路径
+                    , cellMinWidth: 80
+                    , height: 'full-150'
+                    , toolbar: '#jhToolBar'
+                    , cols: [[
+                        {checkbox: true, fixed: 'left'},
+                        {field: 'uploadUser', title: '判断人姓名', sort: true},
+                        {field: 'examTime', title: '判断时间', sort: true},
+                        {field: 'judgeResult', title: '判断结果', sort: true},
+                        {field: 'comprehensiveResult', title: '综合判断结果', sort: true}
+                    ]]
+                    , page: true   //开启分页
+                    , limit: 10   //默认十条数据一页
+                    , limits: [10, 20, 50, 100]  //数据分页条
+                    , done: function (res) {
+
+                    }
+                });
+            }
+        };
+        jjwl.initEmpExam();
     });
 </script>
 </body>
