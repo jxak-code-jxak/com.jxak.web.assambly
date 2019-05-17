@@ -1,10 +1,169 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>费用台账</title>
+    <link rel="stylesheet" th:href="@{/plugins/layui/css/layui.css}"/>
+    <script th:src="@{/plugins/layui/layui.js}"></script>
 </head>
 <body>
+<script type="text/html" id="jhToolBar" lay-filter="jhEdit">
+    <okToolbar>
+        <button class="layui-btn" lay-event="add">
+            <i class="iconfont icon-tianjiayonghu1"></i>新增
+        </button>
+        <button class="layui-btn layui-btn-danger" lay-event="deleteChecked">
+            <i class="iconfont icon-shanchu"></i>时间段筛选
+        </button>
+    </okToolbar>
+</script>
+<table id="fyTzTab" lay-filter="jhEdit" class="layui-table"></table>
+<script type="text/html" id="jhBar" lay-filter="jhEdit">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script th:inline="none">
+    layui.use(['element', 'laydate', 'table', 'form'], function () {
+        var $ = layui.jquery
+            , table = layui.table
+            , form = layui.form
+            , laydate = layui.laydate;
+        var fytz = {
+            initFyTzTab: function () {
+                table.render({
+                    elem: '#fyTzTab'  //绑定table id
+                    , url: '/getFyTzPage'  //数据请求路径
+                    , cellMinWidth: 80
+                    , height: 'full-150'
+                    , toolbar: '#jhToolBar'
+                    , cols: [[
+                        {checkbox: true, fixed: 'left'},
+                        {field: 'trXm', title: '安全资金投入项目'},
+                        {field: 'trSj', title: '资金投入时间', sort: true},
+                        {field: 'trJe', title: '投入金额(元)', sort: true},
+                        {field: 'bz', title: '备注', sort: true},
+                        {title: '操作', width: 178, toolbar: '#jhBar', fixed: 'right', align: "center"}
+                    ]]
+                    , page: true   //开启分页
+                    , limit: 10   //默认十条数据一页
+                    , limits: [10, 20, 50, 100]  //数据分页条
+                    , done: function (res) {
 
+                    }
+                });
+                //监听表格头部工具
+                table.on('toolbar(jhEdit)', function (obj) {
+                    //新增数据
+                    if (obj.event === 'add') {
+                        var editData = {title: '新增', btn: '保存', data: '', type: 'add'};
+                        fytz.openEditWin(editData);
+                    }
+                    //删除选中
+                    if (obj.event === 'deleteChecked') {
+                        var ids = [];
+                        //获取选中行的数据
+                        var data = table.checkStatus(obj.config.id).data;
+                        for (var i = 0; i < data.length; i++) {
+                            ids.push(data[i].id);
+                        }
+                        fytz.deleteFyTz(ids);
+                    }
+                });
+                //监听表格中的工具
+                table.on('tool(jhEdit)', function (obj) {
+                    var data = obj.data;
+                    if (obj.event === 'edit') {
+                        var editData = {title: '编辑', data: obj.data, type: obj.event};
+                        fytz.openEditWin(editData);
+                    } else if (obj.event === 'del') {
+                        var ids = [];
+                        ids.push(data.id)
+                        fytz.deleteFyTz(ids);
+                    }
+                });
+            },
+            /**
+             * 打开编辑窗口
+             */
+            openEditWin: function (obj) {
+                layer.open({
+                    type: 2, //类型，解析url
+                    closeBtn: 1, //关闭按钮是否显示 1显示0不显示
+                    title: obj.title, //页面标题
+                    shadeClose: true, //点击遮罩区域是否关闭页面
+                    shade: 0.8,  //遮罩透明度
+                    area: ['100%', '100%'],  //弹出层页面比例
+                    content: '/main/opFyTzEdit',
+                    success: function (layero, index) {
+                        var body = layer.getChildFrame('body', index);
+                        if (obj.type === 'edit') {
+                            body.contents().find("#id").val(obj.data.id);
+                            body.contents().find("#trXm").val(obj.data.trXm);
+                            body.contents().find("#trSj").val(obj.data.trSj);
+                            body.contents().find("#trJe").val(obj.data.trJe);
+                            body.contents().find("#bz").val(obj.data.bz);
+                        }
+                        //保存
+                        body.contents().find("#save").click(function () {
+                            var data = {
+                                id: body.contents().find("#id").val(),
+                                trXm: body.contents().find("#trXm").val(),
+                                trSj: body.contents().find("#trSj").val(),
+                                trJe: body.contents().find("#trJe").val(),
+                                bz: body.contents().find("#bz").val(),
+                            };
+                            fytz.saveFyTz(data, index);
+                        });
+                    }
+                });
+            },
+            /**
+             * 保存费用台账
+             */
+            saveFyTz: function (data, index) {
+                $.ajax({
+                    url: "/saveFyTz",
+                    type: "POST",
+                    data: JSON.stringify(data), //转JSON字符串
+                    dataType: 'json',
+                    contentType: 'application/json;charset=UTF-8', //contentType很重要
+                    success: function (ret) {
+                        fytz.initFyTzTab();
+                        layer.close(index);
+                    },
+                    error: function (ret) {
+                        console.log(JSON.stringify(ret));
+                    }
+                });
+            },
+            /**
+             * 删除费用台账
+             */
+            deleteFyTz: function (ids) {
+                if (!ids.length>0){
+                    alert("请选择需要删除的数据");
+                    return;
+                }
+                layer.confirm('你确定删除这条记录吗？', function (index) {
+                    $.ajax({
+                        url: '/deleteFyTzByIds'
+                        , type: 'post'
+                        , data: JSON.stringify(ids)
+                        , contentType: 'application/json;charset=UTF-8' //contentType很重要
+                        , dataType: 'json'
+                        , success: function (ret) {
+                            fytz.initFyTzTab();
+                            layer.close(index);
+                        }
+                        , error: function (ret) {
+                            console.log(JSON.stringify(ret));
+                        }
+                    });
+                });
+            }
+        };
+        fytz.initFyTzTab();
+    });
+</script>
 </body>
 </html>

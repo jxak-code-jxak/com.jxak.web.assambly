@@ -49,7 +49,7 @@ public class PolarNetController {
      * @return
      */
     @GetMapping(value = "/getEnterpriseExamPage")
-    public ResponseT  getEnterpriseExamPage(@RequestParam int page,@RequestParam int limit){
+    public ResponseT  getEnterpriseExamPage(@RequestParam int page,int limit){
         ResponseT responseT=new ResponseT();
         responseT.setData(enterpriseExamService.getEnterpriseExamList());
         responseT.setCount(enterpriseExamService.selectCount(new EntityWrapper<>()));

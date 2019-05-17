@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>费用台账编辑</title>
+    <link rel="stylesheet" th:href="@{/plugins/layui/css/layui.css}"/>
+    <script th:src="@{/plugins/layui/layui.js}"></script>
+</head>
+<body>
+<div class="layui-container layui-form">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="hidden" id="id" value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">投入项目</label>
+            <div class="layui-input-inline">
+                <input id="trXm" type="text" lay-verify="required" autocomplete="off" class="layui-input" placeholder="安全资金投入项目">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">投入时间</label>
+            <div class="layui-input-inline">
+                <input id="trSj" type="text" lay-verify="required" autocomplete="off" class="layui-input" placeholder="资金投入时间">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">投入金额</label>
+            <div class="layui-input-inline">
+                <input id="trJe" lay-verify="required" type="number" class="layui-input" placeholder="投入金额">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-inline">
+                <input id="bz" type="text" lay-verify="required" autocomplete="off" class="layui-input" placeholder="">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline" style="width: 350px">
+            <button id="save" type="button" style="margin-left: 40px" class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+        </div>
+        <div class="layui-inline">
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</div>
+<script th:inline="none">
+    layui.use(['element', 'laydate', 'table', 'form'], function () {
+        var $ = layui.jquery
+            , table = layui.table
+            , form = layui.form
+            , laydate = layui.laydate;
+        laydate.render({
+            elem: '#trSj',
+            trigger: 'click'
+        });
+    });
+</script>
+</body>
+</html>

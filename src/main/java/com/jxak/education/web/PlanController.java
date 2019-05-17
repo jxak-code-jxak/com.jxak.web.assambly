@@ -28,7 +28,7 @@ public class PlanController {
     * @Version:        1.0
     */
     @GetMapping(value = "/getPlanList")
-    public ResponseT getPlanListPage(@RequestParam int page, @RequestParam int limit){
+    public ResponseT getPlanListPage(@RequestParam int page,int limit){
         ResponseT responseT=new ResponseT<>();
         responseT.setData(planService.getPlanListPage(page,limit));
         responseT.setCount(planService.selectCount(new EntityWrapper<>()));

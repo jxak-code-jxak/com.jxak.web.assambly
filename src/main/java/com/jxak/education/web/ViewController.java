@@ -84,6 +84,15 @@ public class ViewController {
     public String opFyTz(){
         return "/fytz";
     }
+
+    /**
+     * 费用台账编辑
+     * @return
+     */
+    @RequestMapping(value = "/main/opFyTzEdit",method = RequestMethod.GET)
+    public String opFyTzEdit(){
+        return "/fytzEdit";
+    }
     /**
      * 极卷网络
      * @return
