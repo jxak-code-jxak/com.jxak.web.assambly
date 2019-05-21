@@ -139,4 +139,10 @@ public class ViewController {
     public String to500(){
         return "/error/500";
     }
+    
+    @RequestMapping(value = "/main/println",method = RequestMethod.GET)
+    public String println() {
+    	
+    	return "/println";
+    }
 }
