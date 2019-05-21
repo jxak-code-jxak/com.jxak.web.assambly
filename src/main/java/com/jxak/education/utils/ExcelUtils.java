@@ -130,7 +130,7 @@ public class ExcelUtils {
 		 * @return ：Object 
 		 * @throws
 		 */
-	    public static  Object getCellValue(Cell cell){  
+	    public static  Object getCellValue(Cell cell){   
 	        Object value = null;  
 	        DecimalFormat df = new DecimalFormat("0");
 	        SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd HH:mm:ss"); 
