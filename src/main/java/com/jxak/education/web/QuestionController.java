@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jxak.education.entity.Question;
 import com.jxak.education.service.QuestionService;
 import com.jxak.education.utils.ResponseT;
@@ -40,10 +42,10 @@ public class QuestionController {
 		params.put("id", id);
 		List<Question> list = questionService.queryQuestionByPage(page, limit, params);
 		ResponseT<Question> responseT=new ResponseT<Question>();
+		int count = questionService.selectCount(new EntityWrapper<Question>().like("mat_type_code_", String.valueOf(id)));
 	    responseT.setData(list);
-	    responseT.setCount(5);
+	    responseT.setCount(count);
 	    responseT.setCode("0");
-	    responseT.setMsg("");
 		return responseT;
 	}
 }
